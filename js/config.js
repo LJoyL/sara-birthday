@@ -188,10 +188,10 @@ window.GAME_TEXT = {
     shop_claimed: "Unwrapped",
     shop_view: "Look at it again",
     shop_empty_hint: "Play the mini-games on the island to earn Bells.",
-    shop_locked: "Try every spot first",
+    shop_locked: "Finish every spot first",
     shop_locked_hint:
-      "Coco only opens the counter once you have tried every spot on the island.",
-    shop_progress: "Spots tried",
+      "Coco only opens the counter once you have played a full round at every spot on the island.",
+    shop_progress: "Mini-games finished",
 
     // --- gift reveal ---
     gift_tap_to_open: "Tap the present to unwrap it",
@@ -356,10 +356,10 @@ window.GAME_TEXT = {
     shop_claimed: "Déballé",
     shop_view: "Le revoir",
     shop_empty_hint: "Joue aux mini-jeux de l'île pour gagner des clochettes.",
-    shop_locked: "Essaie d'abord chaque endroit",
+    shop_locked: "Termine d'abord chaque endroit",
     shop_locked_hint:
-      "Coco n'ouvre le comptoir qu'une fois que tu as essayé tous les endroits de l'île.",
-    shop_progress: "Endroits essayés",
+      "Coco n'ouvre le comptoir qu'une fois que tu as terminé une partie à chaque endroit de l'île.",
+    shop_progress: "Mini-jeux terminés",
 
     gift_tap_to_open: "Touche le cadeau pour le déballer",
     gift_opening: "Déballage...",
