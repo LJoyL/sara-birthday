@@ -3,30 +3,40 @@
   var E = window.Engine;
 
   var LANES = 4;
-  var LANE_KEYS = ["d", "f", "j", "k"];
   var LANE_NOTES = [392.0, 523.25, 587.33, 783.99]; // G4 C5 D5 G5
   var LANE_COLORS = ["#ff9ec4", "#ffd166", "#8fd694", "#89cff0"];
-  var BPM = 104;
-  var BEAT = 60 / BPM;
-  var LEAD_IN = 2.4;
-  var TRAVEL = 1.55; // seconds a note needs to reach the line
-  var PERFECT_WINDOW = 0.085;
-  var GOOD_WINDOW = 0.17;
-  var ACCURACY_TO_WIN = 0.7;
 
-  /** A simple, repeating chart so the song always feels like a song. */
-  function buildChart() {
-    var patterns = [
+  var DEFAULTS = {
+    bpm: 104,
+    bars: 16,
+    leadIn: 2.4,
+    travel: 1.55, // seconds a note needs to reach the line
+    perfectWindow: 0.085,
+    goodWindow: 0.17,
+    accuracyToWin: 0.7,
+    minNotesToWin: 20,
+    bellsPerScore: 0.05,
+    bellsPerCombo: 2,
+    winBonus: 200,
+    laneKeys: ["d", "f", "j", "k"],
+    patterns: [
       [0, 1, 2, 3],
       [0, 2, 1, 3],
       [3, 2, 1, 0],
       [0, 3, 1, 2],
       [1, 1, 2, 2],
       [0, 0, 3, 3],
-    ];
+    ],
+  };
+
+  /** A simple, repeating chart so the song always feels like a song. */
+  function buildChart(S) {
+    var BEAT = 60 / S.bpm;
+    var LEAD_IN = S.leadIn;
+    var patterns = S.patterns;
     var chart = [];
     var beat = 0;
-    for (var bar = 0; bar < 16; bar++) {
+    for (var bar = 0; bar < S.bars; bar++) {
       var pattern = patterns[bar % patterns.length];
       for (var step = 0; step < 4; step++) {
         chart.push({ time: LEAD_IN + beat * BEAT, lane: pattern[step] });
@@ -61,6 +71,15 @@
     hintKey: "concert_hint",
 
     start: function (api) {
+      var S = window.Settings.forGame("concert", DEFAULTS);
+      var LANE_KEYS = S.laneKeys;
+      var BEAT = 60 / S.bpm;
+      var LEAD_IN = S.leadIn;
+      var TRAVEL = S.travel;
+      var PERFECT_WINDOW = S.perfectWindow;
+      var GOOD_WINDOW = S.goodWindow;
+      var ACCURACY_TO_WIN = S.accuracyToWin;
+
       var size = E.logicalSize(api.stage, 640);
       var W = size.w,
         H = size.h;
@@ -70,7 +89,7 @@
       var HIT_Y = H - 64;
       var laneW = W / LANES;
 
-      var chart = buildChart();
+      var chart = buildChart(S);
       var songEnd = chart[chart.length - 1].time + 2.2;
       var clock = 0;
       var perfect = 0;
@@ -333,8 +352,12 @@
         if (finished) return;
         finished = true;
         var accuracy = accuracyNow();
-        var won = accuracy >= ACCURACY_TO_WIN && perfect + good > 20;
-        var bells = Math.round(score / 20) + bestCombo * 2 + (won ? 200 : 0);
+        var won =
+          accuracy >= ACCURACY_TO_WIN && perfect + good >= S.minNotesToWin;
+        var bells =
+          Math.round(score * S.bellsPerScore) +
+          bestCombo * S.bellsPerCombo +
+          (won ? S.winBonus : 0);
         setTimeout(function () {
           api.finish({
             won: won,

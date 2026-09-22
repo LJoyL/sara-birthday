@@ -2,18 +2,23 @@
 (function () {
   var E = window.Engine;
 
-  var BUGS = [
-    { glyph: "🦋", points: 1, speed: 52 },
-    { glyph: "🐞", points: 1, speed: 44 },
-    { glyph: "🐝", points: 1, speed: 74 },
-    { glyph: "🦗", points: 1, speed: 66 },
-    { glyph: "🐛", points: 1, speed: 30 },
-    { glyph: "🦂", points: 2, speed: 86 },
-  ];
-
-  var DURATION = 45;
-  var GOAL = 12;
-  var NET_R = 36;
+  var DEFAULTS = {
+    duration: 45,
+    goal: 12,
+    onField: 6,
+    netRadius: 36,
+    fleeDistance: 110,
+    bellsPerCatch: 45,
+    winBonus: 150,
+    bugs: [
+      { glyph: "🦋", points: 1, speed: 52 },
+      { glyph: "🐞", points: 1, speed: 44 },
+      { glyph: "🐝", points: 1, speed: 74 },
+      { glyph: "🦗", points: 1, speed: 66 },
+      { glyph: "🐛", points: 1, speed: 30 },
+      { glyph: "🦂", points: 2, speed: 86 },
+    ],
+  };
 
   window.Games.bugs = {
     id: "bugs",
@@ -25,6 +30,11 @@
     hintKey: "bugs_hint",
 
     start: function (api) {
+      var S = window.Settings.forGame("bugs", DEFAULTS);
+      var DURATION = S.duration;
+      var GOAL = S.goal;
+      var NET_R = S.netRadius;
+
       var size = E.logicalSize(api.stage, 640);
       var W = size.w,
         H = size.h;
@@ -50,7 +60,7 @@
       }
 
       function spawnBug() {
-        var kind = E.pick(BUGS);
+        var kind = E.pick(S.bugs);
         var edge = (Math.random() * 4) | 0;
         var x = edge === 0 ? -20 : edge === 1 ? W + 20 : E.rand(20, W - 20);
         var y = edge === 2 ? -20 : edge === 3 ? H + 20 : E.rand(40, H - 20);
@@ -67,7 +77,7 @@
         });
       }
 
-      for (var b = 0; b < 6; b++) spawnBug();
+      for (var b = 0; b < S.onField; b++) spawnBug();
 
       function updateHud() {
         api.setStats([
@@ -163,7 +173,7 @@
             var dx = bug.x - net.x,
               dy = bug.y - net.y;
             var d2 = dx * dx + dy * dy;
-            if (d2 < 110 * 110 && d2 > 1) {
+            if (d2 < S.fleeDistance * S.fleeDistance && d2 > 1) {
               var d = Math.sqrt(d2);
               bug.vx += (dx / d) * 160 * dt * 4;
               bug.vy += (dy / d) * 160 * dt * 4;
@@ -306,7 +316,7 @@
         if (finished) return;
         finished = true;
         var won = caught >= GOAL;
-        var bells = caught * 45 + (won ? 150 : 0);
+        var bells = caught * S.bellsPerCatch + (won ? S.winBonus : 0);
         setTimeout(function () {
           api.finish({
             won: won,

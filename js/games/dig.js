@@ -1,11 +1,16 @@
 /* Fossil Dig - a small deduction puzzle. Numbers count the fossils touching a tile. */
 (function () {
-  var COLS = 6;
-  var ROWS = 4;
-  var FOSSILS = 5;
-  var DIGS = 13;
-  var GOAL = 4;
-  var TREASURE = ["🦴", "🦕", "🐚", "🗿", "💎"];
+  var DEFAULTS = {
+    cols: 6,
+    rows: 4,
+    fossils: 5,
+    digs: 13,
+    goal: 4,
+    bellsPerFossil: 170,
+    bellsPerSpareDig: 25,
+    winBonus: 180,
+    treasures: ["🦴", "🦕", "🐚", "🗿", "💎"],
+  };
 
   window.Games.dig = {
     id: "dig",
@@ -18,7 +23,14 @@
 
     start: function (api) {
       var t = window.UI.t;
+      var S = window.Settings.forGame("dig", DEFAULTS);
+      var COLS = S.cols;
+      var ROWS = S.rows;
+      var TREASURE = S.treasures;
       var total = COLS * ROWS;
+      var FOSSILS = Math.max(1, Math.min(S.fossils, total));
+      var DIGS = Math.max(1, Math.min(S.digs, total));
+      var GOAL = Math.min(S.goal, FOSSILS);
       var buried = [];
       var dug = [];
       var found = 0;
@@ -143,7 +155,10 @@
         finished = true;
         revealAll();
         var won = found >= GOAL;
-        var bells = found * 170 + digsLeft * 25 + (won ? 180 : 0);
+        var bells =
+          found * S.bellsPerFossil +
+          digsLeft * S.bellsPerSpareDig +
+          (won ? S.winBonus : 0);
         setTimeout(function () {
           api.finish({
             won: won,

@@ -2,66 +2,34 @@
 (function () {
   var E = window.Engine;
 
-  var FISH = [
-    {
-      glyph: "🐟",
-      chance: 40,
-      bells: 60,
-      en: "River Fish",
-      fr: "Poisson de rivière",
-    },
-    {
-      glyph: "🐠",
-      chance: 22,
-      bells: 90,
-      en: "Ribbon Fish",
-      fr: "Poisson ruban",
-    },
-    { glyph: "🐡", chance: 14, bells: 120, en: "Puffer", fr: "Poisson-globe" },
-    {
-      glyph: "🦐",
-      chance: 10,
-      bells: 100,
-      en: "Sweet Shrimp",
-      fr: "Crevette sucrée",
-    },
-    {
-      glyph: "🦀",
-      chance: 8,
-      bells: 140,
-      en: "Sunset Crab",
-      fr: "Crabe du couchant",
-    },
-    {
-      glyph: "🐙",
-      chance: 4,
-      bells: 220,
-      en: "Shy Octopus",
-      fr: "Poulpe timide",
-    },
-    {
-      glyph: "👑",
-      chance: 2,
-      bells: 400,
-      en: "Tiny Crown (?!)",
-      fr: "Petite couronne (?!)",
-    },
-  ];
+  var DEFAULTS = {
+    goal: 5,
+    casts: 8,
+    biteWindow: 0.95,
+    waitFrom: 1.4,
+    waitTo: 4.2,
+    winBonus: 200,
+    fish: [
+      { glyph: "🐟", chance: 40, bells: 60, name: "River Fish" },
+      { glyph: "🐠", chance: 22, bells: 90, name: "Ribbon Fish" },
+      { glyph: "🐡", chance: 14, bells: 120, name: "Puffer" },
+      { glyph: "🦐", chance: 10, bells: 100, name: "Sweet Shrimp" },
+      { glyph: "🦀", chance: 8, bells: 140, name: "Sunset Crab" },
+      { glyph: "🐙", chance: 4, bells: 220, name: "Shy Octopus" },
+      { glyph: "👑", chance: 2, bells: 400, name: "Tiny Crown (?!)" },
+    ],
+  };
 
-  var GOAL = 5;
-  var CASTS = 8;
-  var BITE_WINDOW = 0.95;
-
-  function rollFish() {
-    var total = FISH.reduce(function (s, f) {
-      return s + f.chance;
+  function rollFish(fish) {
+    var total = fish.reduce(function (sum, f) {
+      return sum + f.chance;
     }, 0);
     var r = Math.random() * total;
-    for (var i = 0; i < FISH.length; i++) {
-      r -= FISH[i].chance;
-      if (r <= 0) return FISH[i];
+    for (var i = 0; i < fish.length; i++) {
+      r -= fish[i].chance;
+      if (r <= 0) return fish[i];
     }
-    return FISH[0];
+    return fish[0];
   }
 
   window.Games.fishing = {
@@ -74,11 +42,14 @@
     hintKey: "fishing_hint",
 
     start: function (api) {
+      var S = window.Settings.forGame("fishing", DEFAULTS);
+      var GOAL = S.goal;
+      var CASTS = S.casts;
+
       var size = E.logicalSize(api.stage, 640);
       var W = size.w,
         H = size.h;
       var t = window.UI.t;
-      var lang = window.GAME_CONFIG.lang === "fr" ? "fr" : "en";
 
       var WATER_Y = Math.round(H * 0.47);
       var state = "idle"; // idle | cast | wait | bite | result
@@ -123,8 +94,8 @@
         flight = 0;
         bobber.x = E.rand(300, W - 80);
         bobber.y = E.clamp(WATER_Y + E.rand(40, 150), WATER_Y + 34, H - 44);
-        pendingFish = rollFish();
-        timer = E.rand(1.4, 4.2);
+        pendingFish = rollFish(S.fish);
+        timer = E.rand(S.waitFrom, S.waitTo);
         setMessage("");
         window.Sound.play("tap");
       }
@@ -141,7 +112,7 @@
 
       function bite() {
         state = "bite";
-        timer = BITE_WINDOW;
+        timer = S.biteWindow;
         bobber.shake = 1;
         setMessage(t("fishing_bite"));
         window.Sound.play("bite");
@@ -157,7 +128,7 @@
           setMessage(
             t("fishing_caught") +
               " " +
-              pendingFish[lang] +
+              pendingFish.name +
               " " +
               pendingFish.glyph,
           );
@@ -419,7 +390,7 @@
         if (finished) return;
         finished = true;
         var won = caught >= GOAL;
-        var total = bells + (won ? 200 : 0);
+        var total = bells + (won ? S.winBonus : 0);
         setTimeout(function () {
           api.finish({
             won: won,

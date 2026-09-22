@@ -1,8 +1,23 @@
 /* Memory match - a DOM based mini-game (cards, not canvas). */
 (function () {
-  var SYMBOLS = ["🌸", "🍡", "🐱", "⭐", "🍜", "🎐", "🦊", "☕"];
-  var PAIRS = SYMBOLS.length;
-  var PAR_MOVES = 16;
+  var DEFAULTS = {
+    parMoves: 16,
+    parSeconds: 60,
+    baseBells: 800,
+    bellsPerExtraMove: 18,
+    bellsPerExtraSecond: 4,
+    minBells: 220,
+    symbols: ["🌸", "🍡", "🐱", "⭐", "🍜", "🎐", "🦊", "☕"],
+  };
+
+  /** Keeps the board close to square whatever number of pairs is configured. */
+  function gridCols(cards) {
+    var start = Math.ceil(Math.sqrt(cards));
+    for (var c = start; c <= cards; c++) {
+      if (cards % c === 0) return c;
+    }
+    return start;
+  }
 
   function shuffle(arr) {
     for (var i = arr.length - 1; i > 0; i--) {
@@ -25,6 +40,10 @@
 
     start: function (api) {
       var t = window.UI.t;
+      var S = window.Settings.forGame("memory", DEFAULTS);
+      var SYMBOLS = S.symbols;
+      var PAIRS = SYMBOLS.length;
+      var PAR_MOVES = S.parMoves;
       var moves = 0;
       var found = 0;
       var seconds = 0;
@@ -34,6 +53,10 @@
 
       var board = document.createElement("div");
       board.className = "memory-board";
+      var cols = gridCols(PAIRS * 2);
+      board.style.gridTemplateColumns = "repeat(" + cols + ", 1fr)";
+      board.style.gridTemplateRows =
+        "repeat(" + Math.ceil((PAIRS * 2) / cols) + ", 1fr)";
       api.stage.innerHTML = "";
       api.stage.classList.add("stage-tall");
       api.stage.appendChild(board);
@@ -121,9 +144,13 @@
         if (finished) return;
         finished = true;
         clearInterval(ticker);
-        var movePenalty = Math.max(0, moves - PAR_MOVES) * 18;
-        var timePenalty = Math.max(0, seconds - 60) * 4;
-        var bells = Math.max(220, 800 - movePenalty - timePenalty);
+        var movePenalty = Math.max(0, moves - PAR_MOVES) * S.bellsPerExtraMove;
+        var timePenalty =
+          Math.max(0, seconds - S.parSeconds) * S.bellsPerExtraSecond;
+        var bells = Math.max(
+          S.minBells,
+          S.baseBells - movePenalty - timePenalty,
+        );
         var perfect = moves <= PAR_MOVES + 4;
         setTimeout(function () {
           api.finish({

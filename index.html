@@ -49,7 +49,6 @@
           <p class="title-hello" id="t-hello"></p>
           <button class="btn btn-big" id="btn-start"></button>
           <div class="title-row">
-            <button class="btn btn-ghost btn-small" id="btn-lang">FR</button>
             <button class="btn btn-ghost btn-small" id="btn-reset"></button>
           </div>
         </div>
@@ -75,19 +74,39 @@
             <div class="deco flower f3">🌻</div>
             <div class="deco rock r1">🪨</div>
 
-            <button class="spot" id="spot-bugs" style="--x: 24%; --y: 20%">
+            <button
+              class="spot"
+              id="spot-bugs"
+              data-game="bugs"
+              style="--x: 24%; --y: 20%"
+            >
               <span class="spot-icon">🦋</span>
               <span class="spot-label"></span>
             </button>
-            <button class="spot" id="spot-orchard" style="--x: 50%; --y: 18%">
+            <button
+              class="spot"
+              id="spot-orchard"
+              data-game="orchard"
+              style="--x: 50%; --y: 18%"
+            >
               <span class="spot-icon">🍑</span>
               <span class="spot-label"></span>
             </button>
-            <button class="spot" id="spot-fishing" style="--x: 76%; --y: 22%">
+            <button
+              class="spot"
+              id="spot-fishing"
+              data-game="fishing"
+              style="--x: 76%; --y: 22%"
+            >
               <span class="spot-icon">🎣</span>
               <span class="spot-label"></span>
             </button>
-            <button class="spot" id="spot-dig" style="--x: 15%; --y: 46%">
+            <button
+              class="spot"
+              id="spot-dig"
+              data-game="dig"
+              style="--x: 15%; --y: 46%"
+            >
               <span class="spot-icon">🦴</span>
               <span class="spot-label"></span>
             </button>
@@ -100,15 +119,30 @@
               <span class="spot-label"></span>
               <span class="badge" id="shop-badge" hidden>!</span>
             </button>
-            <button class="spot" id="spot-rain" style="--x: 85%; --y: 46%">
+            <button
+              class="spot"
+              id="spot-rain"
+              data-game="rain"
+              style="--x: 85%; --y: 46%"
+            >
               <span class="spot-icon">🌧️</span>
               <span class="spot-label"></span>
             </button>
-            <button class="spot" id="spot-memory" style="--x: 26%; --y: 70%">
+            <button
+              class="spot"
+              id="spot-memory"
+              data-game="memory"
+              style="--x: 26%; --y: 70%"
+            >
               <span class="spot-icon">☕</span>
               <span class="spot-label"></span>
             </button>
-            <button class="spot" id="spot-concert" style="--x: 74%; --y: 70%">
+            <button
+              class="spot"
+              id="spot-concert"
+              data-game="concert"
+              style="--x: 74%; --y: 70%"
+            >
               <span class="spot-icon">🎸</span>
               <span class="spot-label"></span>
             </button>
@@ -199,6 +233,7 @@
     <canvas class="fx-canvas" id="fx-canvas" aria-hidden="true"></canvas>
 
     <script src="js/config.js"></script>
+    <script src="js/settings.js"></script>
     <script src="js/audio.js"></script>
     <script src="js/ui.js"></script>
     <script src="js/engine.js"></script>

@@ -4,10 +4,6 @@
 
   /* ---------- text ---------------------------------------------------- */
 
-  function pack() {
-    return window.GAME_TEXT[cfg.lang] || window.GAME_TEXT.en;
-  }
-
   function fill(str) {
     return String(str)
       .replace(/\{name\}/g, cfg.playerName)
@@ -16,16 +12,14 @@
   }
 
   function t(key) {
-    var value = pack()[key];
-    if (value === undefined) value = window.GAME_TEXT.en[key];
+    var value = window.GAME_TEXT[key];
     if (value === undefined) return key;
     if (Array.isArray(value)) return value.map(fill);
     return fill(value);
   }
 
   function giftText(id) {
-    var byLang = window.GIFT_TEXT[cfg.lang] || window.GIFT_TEXT.en;
-    var entry = byLang[id] || window.GIFT_TEXT.en[id] || {};
+    var entry = window.GIFT_TEXT[id] || {};
     return {
       name: fill(entry.name || id),
       tagline: fill(entry.tagline || ""),
@@ -34,8 +28,7 @@
   }
 
   function letterLines() {
-    var lines = window.LETTER_TEXT[cfg.lang] || window.LETTER_TEXT.en;
-    return lines.map(fill);
+    return (window.LETTER_TEXT || []).map(fill);
   }
 
   /* ---------- screens --------------------------------------------------- */
@@ -319,6 +312,7 @@
   /* ---------- falling petals (decoration) ------------------------------------- */
 
   function startPetals() {
+    if (!window.Settings.option("petals")) return;
     var host = document.getElementById("petals");
     var glyphs = ["🌸", "🌸", "🌺", "✿", "❀"];
     setInterval(function () {

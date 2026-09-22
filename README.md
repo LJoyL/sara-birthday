@@ -22,8 +22,9 @@ No build step, no dependencies, no assets to download. Open `index.html` and pla
 | ☕ Cozy Café     | Memory match     | Find all 8 pairs, fewer moves = more Bells                  |
 | 🎸 K.K. Concert  | Rhythm game      | Keep 70% accuracy across 80 notes in four lanes             |
 
-4. Every run pays Bells, win or lose, so the island is never a dead end.
-5. The 🎁 Gift Shop opens once **every** spot has been tried at least once. Each present is
+4. Every run pays Bells, win or lose, so the island is never a dead end. All of the numbers
+   in that table are settings you can change — see below.
+5. The 🎁 Gift Shop opens once **every** spot has been played to the end at least once. Each present is
    unwrapped with a little ceremony (tap it three times), then revealed with a personal note.
 6. Unwrap both presents and a 🎆 plaza appears on the map with the birthday letter, a photo
    slideshow and fireworks.
@@ -36,19 +37,39 @@ D F J K for the concert lanes).
 
 ## Making it personal
 
-Everything you'd want to change lives in **`js/config.js`**:
+Everything you'd want to change lives in **`js/config.js`**, and nothing else needs editing:
 
 - `playerName` / `fromName` — who's playing, who it's from.
 - `hostName` / `hostIcon` — the villager who guides her around.
-- `lang` — `"en"` or `"fr"` (there's also an EN/FR toggle on the title screen).
 - `gifts` — the presents: emoji, Bell price, wrapping-paper colours, optional photo.
-- `requireAllGamesBeforeGifts` — set to `false` if you'd rather she could shop straight away.
 - `memories` — photos for the slideshow in the finale.
-- `GAME_TEXT` — every UI string, per language.
+- `options` — sound and petals on by default, the reset button, starting Bells, whether the
+  shop stays locked until every spot is finished, and `spots`, the list of mini-games that
+  appear on the island (drop one from the list and its spot disappears).
+- `games` — the difficulty and payout of every mini-game (see below).
+- `GAME_TEXT` — every string in the game.
 - `GIFT_TEXT` — the name, tagline and note for each present.
 - `LETTER_TEXT` — the birthday letter shown in the finale.
 
 Adding a third present later is just another entry in `gifts` plus its `GIFT_TEXT` block.
+
+### Difficulty and how fast she earns
+
+`config.games` holds one block per mini-game. Three knobs repeat everywhere:
+
+- `duration` (or `casts` / `digs` / `bars`) — how long a round lasts.
+- `goal` — what counts as a win.
+- `bells*` and `winBonus` — what a round pays out.
+
+So to make the whole island gentler and richer, raise the `bells*` values and lower the
+`goal` values; to make her work for it, do the opposite. The rest of each block is
+game-specific and commented in place: net size and how skittish the bugs are, the width of
+the orchard's golden window, how long a fish waits before biting, the size of the dig grid,
+the storm's spawn rate and how forgiving the lightning hitbox is, the café's par for moves
+and time, and the concert's BPM, note speed and timing windows.
+
+Every line in `games` and `options` is optional — delete one and the game falls back to its
+built-in default, so you can trim the file down to only what you changed.
 
 ### Real photos
 
@@ -77,7 +98,8 @@ from branch, root folder). Everything is static, so it just works.
 ```
 index.html          screens and layout
 css/style.css       the whole pastel look
-js/config.js        ← personal settings and all text
+js/config.js        ← personal settings, difficulty, payouts and all text
+js/settings.js      reads config.js, falling back to each game's defaults
 js/audio.js         WebAudio sound effects (no audio files)
 js/ui.js            text helper, screens, dialogue, toasts, modals, confetti
 js/engine.js        tiny canvas engine (loop + pointer/keyboard input)

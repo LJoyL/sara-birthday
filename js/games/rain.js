@@ -2,27 +2,36 @@
 (function () {
   var E = window.Engine;
 
-  var DURATION = 60;
-  var GOAL = 350;
+  var DEFAULTS = {
+    duration: 60,
+    goal: 350,
+    hearts: 3,
+    mercySeconds: 1.2,
+    catchWidth: 38,
+    dodgeWidth: 24,
+    spawnFrom: 0.34,
+    spawnTo: 0.72,
+    bellsPerPoint: 1.2,
+    winBonus: 200,
+    items: [
+      { glyph: "☂️", points: 30, chance: 34, good: true },
+      { glyph: "🍂", points: 15, chance: 26, good: true },
+      { glyph: "🌸", points: 20, chance: 16, good: true },
+      { glyph: "⭐", points: 60, chance: 8, good: true },
+      { glyph: "⚡", points: 0, chance: 13, good: false },
+    ],
+  };
 
-  var ITEMS = [
-    { glyph: "☂️", points: 30, chance: 34, good: true },
-    { glyph: "🍂", points: 15, chance: 26, good: true },
-    { glyph: "🌸", points: 20, chance: 16, good: true },
-    { glyph: "⭐", points: 60, chance: 8, good: true },
-    { glyph: "⚡", points: 0, chance: 13, good: false },
-  ];
-
-  function rollItem() {
-    var total = ITEMS.reduce(function (s, i) {
-      return s + i.chance;
+  function rollItem(items) {
+    var total = items.reduce(function (sum, item) {
+      return sum + item.chance;
     }, 0);
     var r = Math.random() * total;
-    for (var i = 0; i < ITEMS.length; i++) {
-      r -= ITEMS[i].chance;
-      if (r <= 0) return ITEMS[i];
+    for (var i = 0; i < items.length; i++) {
+      r -= items[i].chance;
+      if (r <= 0) return items[i];
     }
-    return ITEMS[0];
+    return items[0];
   }
 
   window.Games.rain = {
@@ -35,6 +44,10 @@
     hintKey: "rain_hint",
 
     start: function (api) {
+      var S = window.Settings.forGame("rain", DEFAULTS);
+      var DURATION = S.duration;
+      var GOAL = S.goal;
+
       var size = E.logicalSize(api.stage, 640);
       var W = size.w,
         H = size.h;
@@ -46,7 +59,7 @@
       var drops = [];
       var pops = [];
       var score = 0;
-      var hearts = 3;
+      var hearts = S.hearts;
       var timeLeft = DURATION;
       var spawnIn = 0.6;
       var finished = false;
@@ -79,7 +92,7 @@
       updateHud();
 
       function spawn() {
-        var kind = rollItem();
+        var kind = rollItem(S.items);
         items.push({
           kind: kind,
           x: E.rand(30, W - 30),
@@ -133,7 +146,9 @@
           spawnIn -= dt;
           if (spawnIn <= 0) {
             spawn();
-            spawnIn = E.rand(0.34, 0.72) * (0.6 + (timeLeft / DURATION) * 0.7);
+            spawnIn =
+              E.rand(S.spawnFrom, S.spawnTo) *
+              (0.6 + (timeLeft / DURATION) * 0.7);
           }
 
           for (var i = items.length - 1; i >= 0; i--) {
@@ -142,7 +157,7 @@
             it.rot += it.spin * dt;
             var dy = it.y - (player.y - 34);
             // generous reach for treats, forgiving hitbox for lightning
-            var reachX = it.kind.good ? 38 : 24;
+            var reachX = it.kind.good ? S.catchWidth : S.dodgeWidth;
             var reachTop = it.kind.good ? -28 : -18;
             var reachBottom = it.kind.good ? 32 : 24;
             if (
@@ -158,7 +173,7 @@
                 updateHud();
               } else if (player.hurt <= 0) {
                 hearts--;
-                player.hurt = 1.2;
+                player.hurt = S.mercySeconds;
                 pop(player.x, player.y - 60, "-1 ❤️", "#ffb4c4");
                 window.Sound.play("hurt");
                 updateHud();
@@ -305,7 +320,8 @@
         if (finished) return;
         finished = true;
         var won = score >= GOAL && hearts > 0;
-        var bells = Math.round(score * 1.2) + (won ? 200 : 0);
+        var bells =
+          Math.round(score * S.bellsPerPoint) + (won ? S.winBonus : 0);
         setTimeout(function () {
           api.finish({
             won: won,

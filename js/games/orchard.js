@@ -2,14 +2,20 @@
 (function () {
   var E = window.Engine;
 
-  var FRUIT = ["🍑", "🍊", "🍎", "🍐", "🍒"];
-  var DURATION = 45;
-  var GOAL = 10;
-
-  // ripeness milestones, in "ripeness units" (1 = perfectly ripe)
-  var RIPE_FROM = 0.78;
-  var RIPE_TO = 1.02;
-  var GOOD_TO = 1.28;
+  var DEFAULTS = {
+    duration: 45,
+    goal: 10,
+    onTree: 4,
+    ripenFrom: 0.3,
+    ripenTo: 0.46,
+    perfectFrom: 0.78,
+    perfectTo: 1.02,
+    overripeAt: 1.28,
+    bellsPerPerfect: 60,
+    bellsPerLate: 18,
+    winBonus: 180,
+    fruit: ["🍑", "🍊", "🍎", "🍐", "🍒"],
+  };
 
   window.Games.orchard = {
     id: "orchard",
@@ -21,6 +27,13 @@
     hintKey: "orchard_hint",
 
     start: function (api) {
+      var S = window.Settings.forGame("orchard", DEFAULTS);
+      var DURATION = S.duration;
+      var GOAL = S.goal;
+      var RIPE_FROM = S.perfectFrom;
+      var RIPE_TO = S.perfectTo;
+      var GOOD_TO = S.overripeAt;
+
       var size = E.logicalSize(api.stage, 640);
       var W = size.w,
         H = size.h;
@@ -50,9 +63,9 @@
         fruits.push({
           x: x,
           y: y,
-          glyph: E.pick(FRUIT),
+          glyph: E.pick(S.fruit),
           ripe: E.rand(0, 0.18),
-          speed: E.rand(0.3, 0.46),
+          speed: E.rand(S.ripenFrom, S.ripenTo),
           sway: Math.random() * 6,
           gone: 0,
         });
@@ -64,7 +77,7 @@
         });
       }
 
-      for (var i = 0; i < 4; i++) spawnFruit();
+      for (var i = 0; i < S.onTree; i++) spawnFruit();
 
       function updateHud() {
         api.setStats([
@@ -306,7 +319,10 @@
         if (finished) return;
         finished = true;
         var won = perfect >= GOAL;
-        var bells = perfect * 60 + late * 18 + (won ? 180 : 0);
+        var bells =
+          perfect * S.bellsPerPerfect +
+          late * S.bellsPerLate +
+          (won ? S.winBonus : 0);
         setTimeout(function () {
           api.finish({
             won: won,

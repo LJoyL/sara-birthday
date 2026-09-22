@@ -3,15 +3,9 @@
   var cfg = window.GAME_CONFIG;
   var t, esc;
   var SAVE_KEY = "sakura-island-save-v1";
-  var GAME_IDS = [
-    "bugs",
-    "orchard",
-    "fishing",
-    "dig",
-    "rain",
-    "memory",
-    "concert",
-  ];
+  var GAME_IDS = window.Settings.option("spots").filter(function (id) {
+    return !!window.Games[id];
+  });
 
   var state = null;
   var currentGame = null;
@@ -31,14 +25,13 @@
     return {
       version: 1,
       started: false,
-      bells: 0,
+      bells: window.Settings.option("startingBells") || 0,
       totalEarned: 0,
       games: games,
       gifts: gifts,
       seen: {},
       finaleSeen: false,
-      muted: false,
-      lang: cfg.lang,
+      muted: !window.Settings.option("soundOn"),
     };
   }
 
@@ -64,7 +57,6 @@
       base.seen = saved.seen || {};
       base.finaleSeen = !!saved.finaleSeen;
       base.muted = !!saved.muted;
-      base.lang = saved.lang || cfg.lang;
       return base;
     } catch (e) {
       return base;
@@ -98,7 +90,9 @@
   }
 
   function giftsUnlocked() {
-    return !cfg.requireAllGamesBeforeGifts || allGamesPlayed();
+    return (
+      !window.Settings.option("requireAllGamesBeforeGifts") || allGamesPlayed()
+    );
   }
 
   function gamesPlayedCount() {
@@ -126,11 +120,9 @@
   /* ---------- static text --------------------------------------------------- */
 
   function applyText() {
-    cfg.lang = state.lang;
     t = window.UI.t;
     esc = window.UI.esc;
 
-    document.documentElement.lang = cfg.lang;
     document.title = t("game_title");
 
     el("t-title").textContent = t("game_title");
@@ -138,15 +130,23 @@
     el("t-hello").textContent = t("title_hello");
     el("btn-start").textContent = state.started ? t("continue") : t("start");
     el("btn-reset").textContent = t("reset");
-    el("btn-lang").textContent = cfg.lang === "fr" ? "EN" : "FR";
+    el("btn-reset").hidden = !window.Settings.option("showResetButton");
 
     el("map-hint").textContent = t("map_hint");
-    GAME_IDS.forEach(function (id) {
-      var def = window.Games[id];
-      el("spot-" + id).querySelector(".spot-label").textContent = t(
-        def.shortKey || def.nameKey,
-      );
-    });
+    Array.prototype.forEach.call(
+      document.querySelectorAll(".spot[data-game]"),
+      function (spot) {
+        var id = spot.getAttribute("data-game");
+        var def = window.Games[id];
+        var onIsland = GAME_IDS.indexOf(id) !== -1;
+        spot.hidden = !onIsland;
+        if (onIsland) {
+          spot.querySelector(".spot-label").textContent = t(
+            def.shortKey || def.nameKey,
+          );
+        }
+      },
+    );
     el("spot-shop").querySelector(".spot-label").textContent = t("shop_short");
     el("spot-plaza").querySelector(".spot-label").textContent =
       t("plaza_short");
@@ -481,10 +481,7 @@
         var slide = {
           img: img,
           dot: dot,
-          caption:
-            (memory.caption &&
-              (memory.caption[cfg.lang] || memory.caption.en)) ||
-            "",
+          caption: memory.caption || "",
         };
         dot.addEventListener("click", function () {
           show(slides.indexOf(slide));
@@ -548,13 +545,6 @@
       } else {
         goMap();
       }
-    });
-
-    el("btn-lang").addEventListener("click", function () {
-      state.lang = state.lang === "fr" ? "en" : "fr";
-      save();
-      applyText();
-      window.Sound.play("tap");
     });
 
     el("btn-reset").addEventListener("click", function () {
