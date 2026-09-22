@@ -73,12 +73,13 @@
     hintKey: "fishing_hint",
 
     start: function (api) {
-      var W = 640,
-        H = 400;
+      var size = E.logicalSize(api.stage, 640);
+      var W = size.w,
+        H = size.h;
       var t = window.UI.t;
       var lang = window.GAME_CONFIG.lang === "fr" ? "fr" : "en";
 
-      var WATER_Y = 190;
+      var WATER_Y = Math.round(H * 0.47);
       var state = "idle"; // idle | cast | wait | bite | result
       var timer = 0;
       var caught = 0;
@@ -86,6 +87,11 @@
       var bells = 0;
       var finished = false;
       var message = t("fishing_cast_prompt");
+
+      function setMessage(text) {
+        message = text;
+        api.setHint(text);
+      }
       var bobber = { x: 420, y: WATER_Y + 60, t: 0, shake: 0 };
       var castFrom = { x: 190, y: WATER_Y - 46 };
       var flight = 0;
@@ -105,6 +111,7 @@
         ]);
       }
       updateHud();
+      api.setHint(message);
 
       function addRipple(x, y) {
         ripples.push({ x: x, y: y, r: 4, life: 1 });
@@ -114,16 +121,16 @@
         state = "cast";
         flight = 0;
         bobber.x = E.rand(300, W - 80);
-        bobber.y = WATER_Y + E.rand(40, 150);
+        bobber.y = E.clamp(WATER_Y + E.rand(40, 150), WATER_Y + 34, H - 44);
         pendingFish = rollFish();
         timer = E.rand(1.4, 4.2);
-        message = "";
+        setMessage("");
         window.Sound.play("tap");
       }
 
       function startWait() {
         state = "wait";
-        message = t("fishing_wait");
+        setMessage(t("fishing_wait"));
         window.Sound.play("splash");
         addRipple(bobber.x, bobber.y);
         shadow.x = bobber.x + E.rand(-70, 70);
@@ -135,7 +142,7 @@
         state = "bite";
         timer = BITE_WINDOW;
         bobber.shake = 1;
-        message = t("fishing_bite");
+        setMessage(t("fishing_bite"));
         window.Sound.play("bite");
         addRipple(bobber.x, bobber.y);
       }
@@ -146,17 +153,18 @@
           caught++;
           bells += pendingFish.bells;
           lastCatch = pendingFish;
-          message =
+          setMessage(
             t("fishing_caught") +
-            " " +
-            pendingFish[lang] +
-            " " +
-            pendingFish.glyph;
+              " " +
+              pendingFish[lang] +
+              " " +
+              pendingFish.glyph,
+          );
           window.Sound.play("reel");
           window.Sound.play("catch");
         } else {
           lastCatch = null;
-          message = t("fishing_missed");
+          setMessage(t("fishing_missed"));
           window.Sound.play("miss");
         }
         state = "result";
@@ -179,7 +187,7 @@
           return;
         }
         state = "idle";
-        message = t("fishing_cast_prompt");
+        setMessage(t("fishing_cast_prompt"));
         lastCatch = null;
       }
 

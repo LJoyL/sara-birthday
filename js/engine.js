@@ -4,6 +4,18 @@
   var LOGICAL_W = 640;
   var LOGICAL_H = 400;
 
+  /** Logical canvas size that matches the stage's real shape, so pixels stay square. */
+  function logicalSize(stage, baseWidth) {
+    var w = baseWidth || LOGICAL_W;
+    var rect = stage.getBoundingClientRect();
+    var aspect =
+      rect.width > 0 && rect.height > 0
+        ? rect.width / rect.height
+        : w / LOGICAL_H;
+    var h = Math.round(w / aspect);
+    return { w: w, h: Math.max(300, Math.min(880, h)) };
+  }
+
   function createEngine(stage, opts) {
     opts = opts || {};
     var width = opts.width || LOGICAL_W;
@@ -191,6 +203,7 @@
 
   window.Engine = {
     create: createEngine,
+    logicalSize: logicalSize,
     roundRect: roundRect,
     emoji: emoji,
     label: label,

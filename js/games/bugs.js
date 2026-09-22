@@ -24,8 +24,9 @@
     hintKey: "bugs_hint",
 
     start: function (api) {
-      var W = 640,
-        H = 400;
+      var size = E.logicalSize(api.stage, 640);
+      var W = size.w,
+        H = size.h;
       var t = window.UI.t;
 
       var bugs = [];
@@ -81,6 +82,11 @@
 
       function swing() {
         if (finished || net.swing > 0) return;
+        // a tap should land where the finger is, not where the net lagged behind
+        if (engine.pointer.inside) {
+          net.x = engine.pointer.x;
+          net.y = E.clamp(engine.pointer.y, 34, H - 14);
+        }
         net.swing = 0.28;
         var hit = false;
         for (var i = bugs.length - 1; i >= 0; i--) {
@@ -130,8 +136,8 @@
 
           // net follows the pointer, arrows nudge it
           if (engine.pointer.inside) {
-            net.x += (engine.pointer.x - net.x) * Math.min(1, dt * 16);
-            net.y += (engine.pointer.y - net.y) * Math.min(1, dt * 16);
+            net.x += (engine.pointer.x - net.x) * Math.min(1, dt * 26);
+            net.y += (engine.pointer.y - net.y) * Math.min(1, dt * 26);
           }
           var ax = engine.axisX(),
             ay = engine.axisY();

@@ -34,6 +34,7 @@
       var board = document.createElement("div");
       board.className = "memory-board";
       api.stage.innerHTML = "";
+      api.stage.classList.add("stage-tall");
       api.stage.appendChild(board);
 
       var deck = shuffle(SYMBOLS.concat(SYMBOLS));

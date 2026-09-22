@@ -183,6 +183,7 @@
     currentGame = null;
     currentGameId = null;
     el("game-stage").innerHTML = "";
+    el("game-stage").classList.remove("stage-tall");
     el("hud-stats").innerHTML = "";
   }
 
@@ -200,6 +201,9 @@
     var api = {
       stage: el("game-stage"),
       setStats: renderStats,
+      setHint: function (text) {
+        el("game-hint").textContent = text || t(def.hintKey);
+      },
       finish: function (result) {
         handleFinish(id, result);
       },

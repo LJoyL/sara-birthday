@@ -26,6 +26,11 @@
   -webkit-tap-highlight-color: transparent;
 }
 
+/* several components set their own display, which would beat [hidden] */
+[hidden] {
+  display: none !important;
+}
+
 html,
 body {
   height: 100%;
@@ -1144,6 +1149,24 @@ p {
 }
 
 /* ---------- small screens -------------------------------------------------------- */
+
+@media (max-width: 640px) {
+  /* portrait phones: give the play area real height instead of a letterbox strip */
+  .game-stage {
+    aspect-ratio: 1 / 1;
+  }
+  .game-stage.stage-tall {
+    aspect-ratio: 4 / 5;
+  }
+  /* a portrait island uses the phone screen much better */
+  .island {
+    aspect-ratio: 3 / 4;
+    max-height: 68vh;
+  }
+  .island-land {
+    top: 24%;
+  }
+}
 
 @media (max-width: 560px) {
   .title-card h1 {

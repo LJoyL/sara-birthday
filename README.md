@@ -12,12 +12,12 @@ No build step, no dependencies, no assets to download. Open `index.html` and pla
 2. Coco welcomes you to the island and explains the deal: play, earn Bells, get presents.
 3. Tap a spot on the island map to play a mini-game:
 
-| Spot | Mini-game | Goal |
-| --- | --- | --- |
-| 🦋 Flower Meadow | Bug catching | Catch 12 bugs in 45 seconds with the net |
-| 🎣 Quiet River | Fishing | Land 5 fish in 8 casts — reel in the moment it bites |
-| ☕ Cozy Café | Memory match | Find all 8 pairs, fewer moves = more Bells |
-| 🌧️ Rainy Path | Rainy day dash | Score 400 points, dodge the lightning, keep your hearts |
+| Spot             | Mini-game      | Goal                                                    |
+| ---------------- | -------------- | ------------------------------------------------------- |
+| 🦋 Flower Meadow | Bug catching   | Catch 12 bugs in 45 seconds with the net                |
+| 🎣 Quiet River   | Fishing        | Land 5 fish in 8 casts — reel in the moment it bites    |
+| ☕ Cozy Café     | Memory match   | Find all 8 pairs, fewer moves = more Bells              |
+| 🌧️ Rainy Path    | Rainy day dash | Score 400 points, dodge the lightning, keep your hearts |
 
 4. Every run pays Bells, win or lose, so the island is never a dead end.
 5. Spend Bells at the 🎁 Gift Shop. Each present is unwrapped with a little ceremony

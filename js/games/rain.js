@@ -3,14 +3,14 @@
   var E = window.Engine;
 
   var DURATION = 60;
-  var GOAL = 400;
+  var GOAL = 350;
 
   var ITEMS = [
     { glyph: "☂️", points: 30, chance: 34, good: true },
     { glyph: "🍂", points: 15, chance: 26, good: true },
     { glyph: "🌸", points: 20, chance: 16, good: true },
     { glyph: "⭐", points: 60, chance: 8, good: true },
-    { glyph: "⚡", points: 0, chance: 16, good: false },
+    { glyph: "⚡", points: 0, chance: 13, good: false },
   ];
 
   function rollItem() {
@@ -34,8 +34,9 @@
     hintKey: "rain_hint",
 
     start: function (api) {
-      var W = 640,
-        H = 400;
+      var size = E.logicalSize(api.stage, 640);
+      var W = size.w,
+        H = size.h;
       var t = window.UI.t;
       var GROUND = H - 46;
 
@@ -139,7 +140,15 @@
             it.y += it.vy * dt;
             it.rot += it.spin * dt;
             var dy = it.y - (player.y - 34);
-            if (Math.abs(it.x - player.x) < 34 && dy > -26 && dy < 30) {
+            // generous reach for treats, forgiving hitbox for lightning
+            var reachX = it.kind.good ? 38 : 24;
+            var reachTop = it.kind.good ? -28 : -18;
+            var reachBottom = it.kind.good ? 32 : 24;
+            if (
+              Math.abs(it.x - player.x) < reachX &&
+              dy > reachTop &&
+              dy < reachBottom
+            ) {
               items.splice(i, 1);
               if (it.kind.good) {
                 score += it.kind.points;
