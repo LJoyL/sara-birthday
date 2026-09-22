@@ -351,6 +351,26 @@
 
   /* ---------- misc -------------------------------------------------------------- */
 
+  /** An <img> that quietly degrades to an emoji when the file is missing. */
+  function media(photo, emoji, imgClass, emojiClass, onFallback) {
+    function emojiEl() {
+      var div = document.createElement("div");
+      div.className = emojiClass;
+      div.textContent = emoji;
+      return div;
+    }
+    if (!photo) return emojiEl();
+    var img = document.createElement("img");
+    img.className = imgClass;
+    img.alt = "";
+    img.addEventListener("error", function () {
+      if (img.parentNode) img.parentNode.replaceChild(emojiEl(), img);
+      if (onFallback) onFallback();
+    });
+    img.src = photo;
+    return img;
+  }
+
   function esc(str) {
     return String(str).replace(/[&<>"']/g, function (c) {
       return {
@@ -386,5 +406,6 @@
     fireworks: fireworks,
     stopFireworks: stopFireworks,
     esc: esc,
+    media: media,
   };
 })();

@@ -11,9 +11,10 @@
 
   /**
    * Render the shop grid.
+   * lock: { locked: bool, played: n, total: n }
    * handlers: { onRedeem(giftId), onView(giftId) }
    */
-  function renderShop(grid, state, handlers) {
+  function renderShop(grid, state, lock, handlers) {
     var t = window.UI.t;
     var esc = window.UI.esc;
     grid.innerHTML = "";
@@ -25,18 +26,31 @@
 
       var card = document.createElement("div");
       card.className = "gift-card" + (claimed ? " claimed" : "");
-      card.innerHTML =
-        '<div class="gift-emoji">' +
-        (claimed ? gift.icon : "🎁") +
-        "</div>" +
-        "<h3>" +
-        esc(claimed ? text.name : "???") +
-        "</h3>" +
-        '<div class="gift-price">' +
-        (claimed
-          ? '<span class="gift-tag">' + esc(t("shop_claimed")) + "</span>"
-          : "🔔 " + gift.price) +
-        "</div>";
+
+      if (claimed) {
+        card.appendChild(
+          window.UI.media(gift.photo, gift.icon, "gift-photo", "gift-emoji"),
+        );
+      } else {
+        var mystery = document.createElement("div");
+        mystery.className = "gift-emoji";
+        mystery.textContent = "🎁";
+        card.appendChild(mystery);
+      }
+
+      var title = document.createElement("h3");
+      title.textContent = claimed ? text.name : "???";
+      card.appendChild(title);
+
+      var price = document.createElement("div");
+      price.className = "gift-price";
+      if (claimed) {
+        price.innerHTML =
+          '<span class="gift-tag">' + esc(t("shop_claimed")) + "</span>";
+      } else {
+        price.textContent = "🔔 " + gift.price;
+      }
+      card.appendChild(price);
 
       var btn = document.createElement("button");
       btn.className = "btn btn-small" + (claimed ? " btn-ghost" : "");
@@ -45,6 +59,9 @@
         btn.addEventListener("click", function () {
           handlers.onView(gift.id);
         });
+      } else if (lock.locked) {
+        btn.textContent = t("shop_locked");
+        btn.disabled = true;
       } else {
         btn.textContent = affordable ? t("shop_redeem") : t("shop_need_more");
         btn.disabled = !affordable;
@@ -115,9 +132,7 @@
     var esc = window.UI.esc;
     window.UI.openModal({
       html:
-        '<div class="gift-reveal-emoji">' +
-        gift.icon +
-        "</div>" +
+        '<div id="gift-media"></div>' +
         "<h2>" +
         esc(text.name) +
         "</h2>" +
@@ -135,6 +150,17 @@
           },
         },
       ],
+      onMount: function (card) {
+        var slot = card.querySelector("#gift-media");
+        slot.appendChild(
+          window.UI.media(
+            gift.photo,
+            gift.icon,
+            "gift-reveal-photo",
+            "gift-reveal-emoji",
+          ),
+        );
+      },
     });
   }
 

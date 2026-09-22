@@ -17,23 +17,40 @@ window.GAME_CONFIG = {
   hostName: "Coco",
   hostIcon: "🐱",
 
+  // Every mini-game has to be played at least once before the shop opens.
+  requireAllGamesBeforeGifts: true,
+
   // The real presents, wrapped inside the game.
   // price = how many Bells she needs to redeem it at the shop.
+  // photo  = optional path to a real photo, e.g. "assets/gifts/shoes.jpg".
+  //          If the file is missing the game quietly falls back to the emoji.
   gifts: [
     {
       id: "shoes",
       icon: "👟",
-      price: 600,
+      price: 900,
+      // photo: "assets/gifts/shoes.jpg",
+      photo: "",
       colorA: "#ffd6e8",
       colorB: "#ff9ec4",
     },
     {
       id: "jacket",
       icon: "🧥",
-      price: 1000,
+      price: 1400,
+      // photo: "assets/gifts/jacket.jpg",
+      photo: "",
       colorA: "#cfe9ff",
       colorB: "#8fc8ff",
     },
+  ],
+
+  // Photos for the slideshow in the finale. Drop images in assets/memories/
+  // and list them here. Any file that fails to load is skipped, and if none
+  // load the slideshow simply does not appear.
+  memories: [
+    // { src: "assets/memories/01.jpg", caption: { en: "Our rainy walk", fr: "Notre balade sous la pluie" } },
+    // { src: "assets/memories/02.jpg", caption: { en: "", fr: "" } },
   ],
 };
 
@@ -79,6 +96,17 @@ window.GAME_TEXT = {
     locked: "Locked",
 
     // --- locations / mini-games ---
+    // short labels used on the island map
+    bugs_short: "Meadow",
+    fishing_short: "River",
+    memory_short: "Café",
+    rain_short: "Rain",
+    orchard_short: "Orchard",
+    dig_short: "Dig Site",
+    concert_short: "Concert",
+    shop_short: "Shop",
+    plaza_short: "Plaza",
+
     bugs_name: "Flower Meadow",
     bugs_title: "Bug Catching",
     bugs_desc: "Chase the bugs with your net before the sun goes down.",
@@ -113,6 +141,39 @@ window.GAME_TEXT = {
       "A storm rolled in. Catch umbrellas and stars, dodge the thunderclouds.",
     rain_hint: "Move with your finger, mouse or arrow keys.",
 
+    orchard_name: "Peach Orchard",
+    orchard_title: "Perfect Picking",
+    orchard_desc: "Fruit is best the second it ripens. Not before, not after.",
+    orchard_hint:
+      "Tap a fruit the moment its ring turns golden. Too early is a snack, too late is jam.",
+    orchard_perfect: "Perfect",
+    orchard_picked: "Picked",
+    orchard_early: "Too soon!",
+    orchard_late: "Overripe...",
+    orchard_nice: "Perfect!",
+    orchard_ok: "Good",
+
+    dig_name: "Fossil Dig",
+    dig_title: "Fossil Dig",
+    dig_desc:
+      "Something old is buried here. The dirt will tell you how close you are.",
+    dig_hint:
+      "Dig a tile. A number means that many fossils are touching that tile.",
+    dig_found: "Fossils",
+    dig_digs: "Digs left",
+
+    concert_name: "K.K. Concert",
+    concert_title: "Saturday Night Concert",
+    concert_desc:
+      "K.K. is warming up. Keep the beat and the whole island sings along.",
+    concert_hint:
+      "Tap a lane (or press D F J K) when its note reaches the line.",
+    concert_combo: "Combo",
+    concert_perfect: "Perfect",
+    concert_good: "Good",
+    concert_miss: "Miss",
+    concert_accuracy: "Accuracy",
+
     // --- results ---
     result_win: "Wonderful!",
     result_lose: "So close!",
@@ -127,6 +188,10 @@ window.GAME_TEXT = {
     shop_claimed: "Unwrapped",
     shop_view: "Look at it again",
     shop_empty_hint: "Play the mini-games on the island to earn Bells.",
+    shop_locked: "Try every spot first",
+    shop_locked_hint:
+      "Coco only opens the counter once you have tried every spot on the island.",
+    shop_progress: "Spots tried",
 
     // --- gift reveal ---
     gift_tap_to_open: "Tap the present to unwrap it",
@@ -144,6 +209,7 @@ window.GAME_TEXT = {
     finale_title: "Happy Birthday!",
     finale_button: "Read the letter",
     finale_replay: "Stay on the island",
+    finale_memories: "Our year, roughly",
 
     // --- host dialogue ---
     dlg_welcome: [
@@ -198,6 +264,16 @@ window.GAME_TEXT = {
     map_hint: "Choisis un endroit sur l'île",
     locked: "Fermé",
 
+    bugs_short: "Prairie",
+    fishing_short: "Rivière",
+    memory_short: "Café",
+    rain_short: "Pluie",
+    orchard_short: "Verger",
+    dig_short: "Fouilles",
+    concert_short: "Concert",
+    shop_short: "Boutique",
+    plaza_short: "Place",
+
     bugs_name: "Prairie fleurie",
     bugs_title: "Chasse aux insectes",
     bugs_desc: "Attrape les insectes au filet avant le coucher du soleil.",
@@ -233,6 +309,40 @@ window.GAME_TEXT = {
       "L'orage arrive. Attrape les parapluies et les étoiles, évite les nuages.",
     rain_hint: "Bouge avec le doigt, la souris ou les flèches.",
 
+    orchard_name: "Verger de pêches",
+    orchard_title: "Cueillette parfaite",
+    orchard_desc:
+      "Un fruit est meilleur à la seconde où il mûrit. Ni avant, ni après.",
+    orchard_hint:
+      "Touche le fruit quand son cercle devient doré. Trop tôt c'est un goûter, trop tard c'est de la confiture.",
+    orchard_perfect: "Parfaits",
+    orchard_picked: "Cueillis",
+    orchard_early: "Trop tôt !",
+    orchard_late: "Trop mûr...",
+    orchard_nice: "Parfait !",
+    orchard_ok: "Bien",
+
+    dig_name: "Site de fouilles",
+    dig_title: "Chasse aux fossiles",
+    dig_desc:
+      "Quelque chose de très vieux est enterré ici. La terre te dira si tu chauffes.",
+    dig_hint:
+      "Creuse une case. Un chiffre indique combien de fossiles la touchent.",
+    dig_found: "Fossiles",
+    dig_digs: "Coups de pelle",
+
+    concert_name: "Concert de K.K.",
+    concert_title: "Concert du samedi soir",
+    concert_desc:
+      "K.K. s'échauffe. Garde le rythme et toute l'île chante avec toi.",
+    concert_hint:
+      "Touche une colonne (ou tape D F J K) quand la note atteint la ligne.",
+    concert_combo: "Combo",
+    concert_perfect: "Parfait",
+    concert_good: "Bien",
+    concert_miss: "Raté",
+    concert_accuracy: "Précision",
+
     result_win: "Magnifique !",
     result_lose: "Presque !",
     result_win_sub: "Toute l'île t'applaudit.",
@@ -246,6 +356,10 @@ window.GAME_TEXT = {
     shop_claimed: "Déballé",
     shop_view: "Le revoir",
     shop_empty_hint: "Joue aux mini-jeux de l'île pour gagner des clochettes.",
+    shop_locked: "Essaie d'abord chaque endroit",
+    shop_locked_hint:
+      "Coco n'ouvre le comptoir qu'une fois que tu as essayé tous les endroits de l'île.",
+    shop_progress: "Endroits essayés",
 
     gift_tap_to_open: "Touche le cadeau pour le déballer",
     gift_opening: "Déballage...",
@@ -260,6 +374,7 @@ window.GAME_TEXT = {
     finale_title: "Joyeux anniversaire !",
     finale_button: "Lire la lettre",
     finale_replay: "Rester sur l'île",
+    finale_memories: "Notre année, en gros",
 
     dlg_welcome: [
       "Oh ! Te voilà ! Bienvenue sur l'île Sakura, {name} !",
@@ -316,13 +431,13 @@ window.LETTER_TEXT = {
   en: [
     "Happy birthday, {name}.",
     "I built you an island because I wanted your present to last longer than the five seconds it takes to open a box.",
-    "You caught bugs, you fished, you beat a storm, and you found both presents. They are real, and they are already waiting for you.",
+    "You caught bugs, you fished, you dug up fossils, you played a whole concert, you beat a storm, and you found both presents. They are real, and they are already waiting for you.",
     "Thank you for every ordinary day you turn into a good one. Here's to another year of walks, rain, and you.",
   ],
   fr: [
     "Joyeux anniversaire, {name}.",
     "Je t'ai construit une île parce que je voulais que ton cadeau dure plus longtemps que les cinq secondes qu'il faut pour ouvrir une boîte.",
-    "Tu as attrapé des insectes, tu as pêché, tu as battu un orage, et tu as trouvé les deux cadeaux. Ils sont réels, et ils t'attendent déjà.",
+    "Tu as attrapé des insectes, tu as pêché, tu as déterré des fossiles, tu as joué un concert entier, tu as battu un orage, et tu as trouvé les deux cadeaux. Ils sont réels, et ils t'attendent déjà.",
     "Merci pour chaque jour ordinaire que tu rends bien. À une nouvelle année de balades, de pluie, et de toi.",
   ],
 };

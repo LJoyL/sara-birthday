@@ -18,6 +18,7 @@
     id: "memory",
     icon: "☕",
     nameKey: "memory_name",
+    shortKey: "memory_short",
     titleKey: "memory_title",
     descKey: "memory_desc",
     hintKey: "memory_hint",

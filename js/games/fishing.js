@@ -68,6 +68,7 @@
     id: "fishing",
     icon: "🎣",
     nameKey: "fishing_name",
+    shortKey: "fishing_short",
     titleKey: "fishing_title",
     descKey: "fishing_desc",
     hintKey: "fishing_hint",

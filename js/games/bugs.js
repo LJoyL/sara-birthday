@@ -19,6 +19,7 @@
     id: "bugs",
     icon: "🦋",
     nameKey: "bugs_name",
+    shortKey: "bugs_short",
     titleKey: "bugs_title",
     descKey: "bugs_desc",
     hintKey: "bugs_hint",

@@ -66,7 +66,7 @@
           </div>
           <div class="island-sea"></div>
           <div class="island-land">
-            <div class="river"></div>
+            <div class="river-clip"><div class="river"></div></div>
             <div class="deco tree t1">🌳</div>
             <div class="deco tree t2">🌸</div>
             <div class="deco tree t3">🌲</div>
@@ -75,35 +75,47 @@
             <div class="deco flower f3">🌻</div>
             <div class="deco rock r1">🪨</div>
 
-            <button class="spot" id="spot-bugs" style="--x: 20%; --y: 30%">
+            <button class="spot" id="spot-bugs" style="--x: 24%; --y: 20%">
               <span class="spot-icon">🦋</span>
               <span class="spot-label"></span>
             </button>
-            <button class="spot" id="spot-fishing" style="--x: 70%; --y: 24%">
+            <button class="spot" id="spot-orchard" style="--x: 50%; --y: 18%">
+              <span class="spot-icon">🍑</span>
+              <span class="spot-label"></span>
+            </button>
+            <button class="spot" id="spot-fishing" style="--x: 76%; --y: 22%">
               <span class="spot-icon">🎣</span>
               <span class="spot-label"></span>
             </button>
-            <button class="spot" id="spot-memory" style="--x: 26%; --y: 66%">
-              <span class="spot-icon">☕</span>
-              <span class="spot-label"></span>
-            </button>
-            <button class="spot" id="spot-rain" style="--x: 76%; --y: 60%">
-              <span class="spot-icon">🌧️</span>
+            <button class="spot" id="spot-dig" style="--x: 15%; --y: 46%">
+              <span class="spot-icon">🦴</span>
               <span class="spot-label"></span>
             </button>
             <button
               class="spot spot-shop"
               id="spot-shop"
-              style="--x: 50%; --y: 46%"
+              style="--x: 50%; --y: 45%"
             >
               <span class="spot-icon">🎁</span>
               <span class="spot-label"></span>
               <span class="badge" id="shop-badge" hidden>!</span>
             </button>
+            <button class="spot" id="spot-rain" style="--x: 85%; --y: 46%">
+              <span class="spot-icon">🌧️</span>
+              <span class="spot-label"></span>
+            </button>
+            <button class="spot" id="spot-memory" style="--x: 26%; --y: 70%">
+              <span class="spot-icon">☕</span>
+              <span class="spot-label"></span>
+            </button>
+            <button class="spot" id="spot-concert" style="--x: 74%; --y: 70%">
+              <span class="spot-icon">🎸</span>
+              <span class="spot-label"></span>
+            </button>
             <button
               class="spot spot-plaza"
               id="spot-plaza"
-              style="--x: 50%; --y: 78%"
+              style="--x: 50%; --y: 88%"
               hidden
             >
               <span class="spot-icon">🎆</span>
@@ -154,6 +166,12 @@
         <div class="panel letter">
           <div class="letter-top">🎂</div>
           <h2 id="finale-title"></h2>
+          <div class="slideshow" id="slideshow" hidden>
+            <h3 class="slide-title" id="finale-memories-title"></h3>
+            <div class="slide-frame" id="slide-frame"></div>
+            <p class="slide-caption" id="slide-caption"></p>
+            <div class="slide-dots" id="slide-dots"></div>
+          </div>
           <div class="letter-body" id="letter-body"></div>
           <p class="letter-sign" id="letter-sign"></p>
           <button class="btn" id="btn-finale-back"></button>
@@ -188,6 +206,9 @@
     <script src="js/games/fishing.js"></script>
     <script src="js/games/memory.js"></script>
     <script src="js/games/rain.js"></script>
+    <script src="js/games/orchard.js"></script>
+    <script src="js/games/dig.js"></script>
+    <script src="js/games/concert.js"></script>
     <script src="js/gifts.js"></script>
     <script src="js/main.js"></script>
   </body>

@@ -123,6 +123,16 @@
       noise(0.5, 0.1);
       tone(180, 0, 0.3, "sine", 0.1);
     },
+    dig: function () {
+      noise(0.22, 0.1);
+      tone(150, 0, 0.12, "sine", 0.1);
+    },
+    tick: function () {
+      tone(1100, 0, 0.03, "square", 0.03);
+    },
+    thud: function () {
+      tone(120, 0, 0.14, "sine", 0.12);
+    },
   };
 
   window.Sound = {
@@ -135,6 +145,16 @@
         } catch (e) {
           /* audio is a nice-to-have */
         }
+      }
+    },
+    /** A single melody note, used by the rhythm game. */
+    note: function (freq, dur) {
+      if (muted) return;
+      try {
+        tone(freq, 0, dur || 0.22, "triangle", 0.15);
+        tone(freq * 2, 0, (dur || 0.22) * 0.6, "sine", 0.05);
+      } catch (e) {
+        /* audio is a nice-to-have */
       }
     },
     setMuted: function (value) {

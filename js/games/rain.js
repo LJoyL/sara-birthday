@@ -29,6 +29,7 @@
     id: "rain",
     icon: "🌧️",
     nameKey: "rain_name",
+    shortKey: "rain_short",
     titleKey: "rain_title",
     descKey: "rain_desc",
     hintKey: "rain_hint",

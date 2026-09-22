@@ -3,7 +3,15 @@
   var cfg = window.GAME_CONFIG;
   var t, esc;
   var SAVE_KEY = "sakura-island-save-v1";
-  var GAME_IDS = ["bugs", "fishing", "memory", "rain"];
+  var GAME_IDS = [
+    "bugs",
+    "orchard",
+    "fishing",
+    "dig",
+    "rain",
+    "memory",
+    "concert",
+  ];
 
   var state = null;
   var currentGame = null;
@@ -89,6 +97,16 @@
     });
   }
 
+  function giftsUnlocked() {
+    return !cfg.requireAllGamesBeforeGifts || allGamesPlayed();
+  }
+
+  function gamesPlayedCount() {
+    return GAME_IDS.filter(function (id) {
+      return state.games[id].played;
+    }).length;
+  }
+
   function canAffordAny() {
     return cfg.gifts.some(function (g) {
       return !state.gifts[g.id] && state.bells >= g.price;
@@ -124,13 +142,14 @@
 
     el("map-hint").textContent = t("map_hint");
     GAME_IDS.forEach(function (id) {
+      var def = window.Games[id];
       el("spot-" + id).querySelector(".spot-label").textContent = t(
-        window.Games[id].nameKey,
+        def.shortKey || def.nameKey,
       );
     });
-    el("spot-shop").querySelector(".spot-label").textContent = t("shop");
+    el("spot-shop").querySelector(".spot-label").textContent = t("shop_short");
     el("spot-plaza").querySelector(".spot-label").textContent =
-      t("finale_title");
+      t("plaza_short");
 
     el("btn-quit-game").textContent = t("quit");
 
@@ -154,6 +173,7 @@
 
   function goMap() {
     stopGame();
+    stopSlideshow();
     window.UI.stopFireworks();
     el("topbar").hidden = false;
     window.UI.showScreen("map");
@@ -161,7 +181,7 @@
   }
 
   function refreshMap() {
-    el("shop-badge").hidden = !canAffordAny();
+    el("shop-badge").hidden = !(canAffordAny() && giftsUnlocked());
     el("spot-plaza").hidden = !allGiftsClaimed();
   }
 
@@ -302,7 +322,12 @@
       window.UI.say(t("dlg_first_bells"));
       return;
     }
-    if (!state.seen.shopReady && canAffordAny() && !allGiftsClaimed()) {
+    if (
+      !state.seen.shopReady &&
+      canAffordAny() &&
+      giftsUnlocked() &&
+      !allGiftsClaimed()
+    ) {
       state.seen.shopReady = true;
       save();
       window.UI.say(t("dlg_shop_ready"));
@@ -324,26 +349,43 @@
   }
 
   function renderShop() {
-    window.Gifts.renderShop(el("gift-grid"), state, {
-      onRedeem: function (giftId) {
-        var gift = window.Gifts.byId(giftId);
-        if (state.bells < gift.price || state.gifts[giftId]) return;
-        setBells(state.bells - gift.price);
-        state.gifts[giftId] = true;
-        save();
-        renderShop();
-        window.Gifts.unwrap(giftId, function () {
+    var locked = !giftsUnlocked();
+    el("shop-foot").textContent = locked
+      ? t("shop_locked_hint") +
+        " (" +
+        t("shop_progress") +
+        ": " +
+        gamesPlayedCount() +
+        "/" +
+        GAME_IDS.length +
+        ")"
+      : t("shop_empty_hint");
+
+    window.Gifts.renderShop(
+      el("gift-grid"),
+      state,
+      { locked: locked },
+      {
+        onRedeem: function (giftId) {
+          var gift = window.Gifts.byId(giftId);
+          if (state.bells < gift.price || state.gifts[giftId]) return;
+          setBells(state.bells - gift.price);
+          state.gifts[giftId] = true;
+          save();
           renderShop();
-          refreshMap();
-          if (allGiftsClaimed() && !state.finaleSeen) {
-            window.UI.toast("🎆 " + t("finale_ready"), 2600);
-          }
-        });
+          window.Gifts.unwrap(giftId, function () {
+            renderShop();
+            refreshMap();
+            if (allGiftsClaimed() && !state.finaleSeen) {
+              window.UI.toast("🎆 " + t("finale_ready"), 2600);
+            }
+          });
+        },
+        onView: function (giftId) {
+          window.Gifts.view(giftId);
+        },
       },
-      onView: function (giftId) {
-        window.Gifts.view(giftId);
-      },
-    });
+    );
   }
 
   /* ---------- passport ------------------------------------------------------------ */
@@ -394,6 +436,78 @@
 
   /* ---------- finale ---------------------------------------------------------------- */
 
+  var slideTimer = null;
+
+  function stopSlideshow() {
+    clearInterval(slideTimer);
+    slideTimer = null;
+  }
+
+  /** Photo slideshow above the letter. Images that fail to load are skipped. */
+  function buildSlideshow() {
+    stopSlideshow();
+    var wrap = el("slideshow");
+    var frame = el("slide-frame");
+    var dots = el("slide-dots");
+    var caption = el("slide-caption");
+    frame.innerHTML = "";
+    dots.innerHTML = "";
+    caption.textContent = "";
+    wrap.hidden = true;
+
+    var memories = cfg.memories || [];
+    if (!memories.length) return;
+
+    var slides = [];
+    var index = 0;
+
+    function show(i) {
+      if (!slides.length) return;
+      index = (i + slides.length) % slides.length;
+      slides.forEach(function (slide, n) {
+        slide.img.classList.toggle("on", n === index);
+        slide.dot.classList.toggle("on", n === index);
+      });
+      var text = slides[index].caption;
+      caption.textContent = text || "";
+    }
+
+    memories.forEach(function (memory) {
+      var img = document.createElement("img");
+      img.alt = "";
+      img.addEventListener("load", function () {
+        var dot = document.createElement("button");
+        dot.className = "slide-dot";
+        var slide = {
+          img: img,
+          dot: dot,
+          caption:
+            (memory.caption &&
+              (memory.caption[cfg.lang] || memory.caption.en)) ||
+            "",
+        };
+        dot.addEventListener("click", function () {
+          show(slides.indexOf(slide));
+          window.Sound.play("tap");
+        });
+        slides.push(slide);
+        dots.appendChild(dot);
+        wrap.hidden = false;
+        if (slides.length === 1) {
+          show(0);
+          slideTimer = setInterval(function () {
+            show(index + 1);
+          }, 4200);
+        }
+      });
+      img.addEventListener("error", function () {
+        if (img.parentNode) img.parentNode.removeChild(img);
+      });
+      img.src = memory.src;
+      frame.appendChild(img);
+    });
+  }
+
   function openFinale() {
     var body = el("letter-body");
     body.innerHTML = "";
@@ -404,6 +518,8 @@
       body.appendChild(p);
     });
     el("letter-sign").textContent = "— " + cfg.fromName + " 💛";
+    el("finale-memories-title").textContent = t("finale_memories");
+    buildSlideshow();
     window.UI.showScreen("finale");
     window.Sound.play("win");
     window.UI.fireworks(9000);
