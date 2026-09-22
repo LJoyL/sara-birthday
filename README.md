@@ -12,15 +12,15 @@ No build step, no dependencies, no assets to download. Open `index.html` and pla
 2. Coco welcomes you to the island and explains the deal: play, earn Bells, get presents.
 3. Tap a spot on the island map to play a mini-game:
 
-| Spot | Mini-game | Goal |
-| --- | --- | --- |
-| 🦋 Flower Meadow | Bug catching | Catch 12 bugs in 45 seconds with the net |
-| 🍑 Peach Orchard | Perfect picking | Pick 10 fruits in the moment their ring turns golden |
-| 🎣 Quiet River | Fishing | Land 5 fish in 8 casts — reel in the moment it bites |
-| 🦴 Fossil Dig | Deduction puzzle | Find 4 of 5 fossils in 13 digs, using the proximity numbers |
-| 🌧️ Rainy Path | Rainy day dash | Score 350 points, dodge the lightning, keep your hearts |
-| ☕ Cozy Café | Memory match | Find all 8 pairs, fewer moves = more Bells |
-| 🎸 K.K. Concert | Rhythm game | Keep 70% accuracy across 80 notes in four lanes |
+| Spot             | Mini-game        | Goal                                                        |
+| ---------------- | ---------------- | ----------------------------------------------------------- |
+| 🦋 Flower Meadow | Bug catching     | Catch 12 bugs in 45 seconds with the net                    |
+| 🍑 Peach Orchard | Perfect picking  | Pick 10 fruits in the moment their ring turns golden        |
+| 🎣 Quiet River   | Fishing          | Land 5 fish in 8 casts — reel in the moment it bites        |
+| 🦴 Fossil Dig    | Deduction puzzle | Find 4 of 5 fossils in 13 digs, using the proximity numbers |
+| 🌧️ Rainy Path    | Rainy day dash   | Score 350 points, dodge the lightning, keep your hearts     |
+| ☕ Cozy Café     | Memory match     | Find all 8 pairs, fewer moves = more Bells                  |
+| 🎸 K.K. Concert  | Rhythm game      | Keep 70% accuracy across 80 notes in four lanes             |
 
 4. Every run pays Bells, win or lose, so the island is never a dead end.
 5. The 🎁 Gift Shop opens once **every** spot has been tried at least once. Each present is
