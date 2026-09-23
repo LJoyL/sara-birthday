@@ -80,6 +80,15 @@
     return document.getElementById(id);
   }
 
+  /** Play the background track chosen in config for this screen. */
+  function setMusic(scene) {
+    window.Sound.setScene(scene);
+    var btn = el("btn-sound");
+    if (!btn) return;
+    var name = window.Sound.trackName();
+    btn.title = name || "Sound";
+  }
+
   function allGamesPlayed() {
     return GAME_IDS.every(function (id) {
       return state.games[id].played;
@@ -188,6 +197,7 @@
     window.UI.stopFireworks();
     el("topbar").hidden = false;
     window.UI.showScreen("map");
+    setMusic("main");
     refreshMap();
   }
 
@@ -227,6 +237,7 @@
     el("game-title").textContent = t(def.titleKey);
     el("game-hint").textContent = t(def.hintKey);
     window.UI.showScreen("game");
+    setMusic(id);
     window.Sound.unlock();
 
     var api = {
@@ -261,6 +272,7 @@
     record.won = record.won || !!result.won;
     addBells(result.bells);
     save();
+    setMusic("reward");
 
     if (result.won) window.Sound.play("win");
     else window.Sound.play("lose");
@@ -356,6 +368,7 @@
   function openShop() {
     el("topbar").hidden = false;
     window.UI.showScreen("shop");
+    setMusic("main");
     renderShop();
     resumeOpening();
   }
@@ -371,6 +384,7 @@
   }
 
   function afterUnwrapClosed() {
+    setMusic("main");
     if (allGiftsClaimed() && !state.finaleSeen) {
       window.UI.toast("🎆 " + t("finale_ready"), 2600);
     }
@@ -385,6 +399,7 @@
       save();
       return;
     }
+    setMusic("reward");
     window.Gifts.unwrap(id, {
       onOpened: finishOpening,
       onClosed: afterUnwrapClosed,
@@ -422,7 +437,10 @@
           resumeOpening();
         },
         onView: function (giftId) {
-          window.Gifts.view(giftId);
+          setMusic("reward");
+          window.Gifts.view(giftId, function () {
+            setMusic("main");
+          });
         },
       },
     );
@@ -432,6 +450,7 @@
 
   function openPassport() {
     el("topbar").hidden = false;
+    setMusic("main");
     var grid = el("stamp-grid");
     grid.innerHTML = "";
     GAME_IDS.forEach(function (id) {
@@ -558,6 +577,7 @@
     el("finale-memories-title").textContent = t("finale_memories");
     buildSlideshow();
     window.UI.showScreen("finale");
+    setMusic("main");
     window.Sound.play("win");
     window.UI.fireworks(9000);
     state.finaleSeen = true;
@@ -640,6 +660,7 @@
     applyText();
     window.Sound.setMuted(state.muted);
     el("sound-icon").textContent = state.muted ? "🔇" : "🔊";
+    setMusic("main");
     setBells(state.bells);
     bind();
     window.UI.showScreen("title");

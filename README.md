@@ -48,6 +48,8 @@ Everything you'd want to change lives in **`js/config.js`**, and nothing else ne
 - `options` — sound and petals on by default, the reset button, starting Bells, whether the
   shop stays locked until every spot is finished, and `spots`, the list of mini-games that
   appear on the island (drop one from the list and its spot disappears).
+- `music` — which background track plays on the main screens, on the reward screen, and in
+  each mini-game (see below).
 - `games` — the difficulty and payout of every mini-game (see below).
 - `GAME_TEXT` — every string in the game.
 - `GIFT_TEXT` — the name, tagline and note for each present.
@@ -78,6 +80,35 @@ and time, and the concert's BPM, note speed and timing windows.
 
 Every line in `games` and `options` is optional — delete one and the game falls back to its
 built-in default, so you can trim the file down to only what you changed.
+
+### Background music
+
+`config.music` chooses one track for three places:
+
+- `main` — the title screen, the island, the shop, the passport and the finale.
+- `reward` — the results screen after a mini-game, and the moment a present is unwrapped.
+- `games` — one entry per mini-game (`bugs`, `orchard`, `fishing`, `dig`, `rain`, `memory`, `concert`).
+
+Set any of them to `""` and that place stays quiet. The same track can be reused in several
+places. `volume` runs from 0 to 1, and the mute button silences the music along with the effects.
+
+These names play a small original tune, with nothing to download:
+
+`island`, `meadow`, `garden`, `river`, `dig`, `rain`, `cafe`, `concert`, `reward`.
+
+To use a recording instead, drop it in `assets/music/` and set that track's `src`. It replaces
+the built-in tune wherever the track is selected:
+
+```js
+tracks: {
+  island: { name: "Island Morning", src: "assets/music/island.mp3" },
+  // ours: { name: "Our Song", src: "assets/music/ours.mp3" },
+},
+main: "ours",
+games: { concert: "ours" },
+```
+
+A file that can't be loaded is skipped, and the screen goes quiet rather than breaking.
 
 ### Real photos
 

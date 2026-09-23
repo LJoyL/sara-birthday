@@ -187,11 +187,11 @@
     });
   }
 
-  function view(giftId) {
+  function view(giftId, onClosed) {
     var gift = giftById(giftId);
     if (!gift) return;
     window.Sound.play("gift");
-    showGift(gift, window.UI.giftText(giftId), null);
+    showGift(gift, window.UI.giftText(giftId), onClosed);
   }
 
   window.Gifts = {

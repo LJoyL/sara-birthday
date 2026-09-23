@@ -46,6 +46,44 @@ window.GAME_CONFIG = {
     spots: ["bugs", "orchard", "fishing", "dig", "rain", "memory", "concert"],
   },
 
+  // Background music.
+  // Pick a track for the main screens (title, island, shop, passport, finale),
+  // for the reward moments (the results screen and unwrapping a present),
+  // and for each mini-game. Use a name from `tracks`, or "" for silence.
+  //
+  // Each built-in name plays a small original tune. To use your own recording,
+  // set src to a file, e.g. "assets/music/island.mp3", and that file replaces
+  // the tune. mp3, ogg and wav all work. A missing file just goes quiet.
+  // volume is 0 (silent) to 1 (full). The mute button still turns it all off.
+  music: {
+    volume: 0.75,
+
+    tracks: {
+      island: { name: "Island Morning", src: "" },
+      meadow: { name: "Meadow Skip", src: "" },
+      garden: { name: "Herb Garden", src: "" },
+      river: { name: "Quiet River", src: "" },
+      dig: { name: "Buried Coins", src: "" },
+      rain: { name: "Rain on the Roof", src: "" },
+      cafe: { name: "Café Music Box", src: "" },
+      concert: { name: "Soft Encore", src: "" },
+      reward: { name: "You Did It", src: "" },
+      // ours: { name: "Our Song", src: "assets/music/ours.mp3" },
+    },
+
+    main: "island",
+    reward: "reward",
+    games: {
+      bugs: "meadow",
+      orchard: "garden",
+      fishing: "river",
+      dig: "dig",
+      rain: "rain",
+      memory: "cafe",
+      concert: "concert",
+    },
+  },
+
   // The real presents, wrapped inside the game.
   // They are redeemed in this order: the next one stays locked until the
   // one before it has been unwrapped. The shop keeps a present's name
