@@ -7,6 +7,7 @@
 
    Quick balance guide:
    - She earns Bells faster:   raise the bells* values, or lower the goals.
+                               A clean win is tuned to about 600 Bells.
    - Rounds get shorter:       lower the duration values.
    - The presents come sooner: lower gifts[].price, or set
                                options.requireAllGamesBeforeGifts to false.
@@ -104,11 +105,51 @@ window.GAME_CONFIG = {
     {
       id: "jacket",
       icon: "🧥",
-      price: 1400,
+      price: 1100,
       // photo: "assets/gifts/jacket.jpg",
       photo: "",
       colorA: "#cfe9ff",
       colorB: "#8fc8ff",
+    },
+    {
+      id: "bouquet",
+      icon: "💐",
+      price: 1000,
+      photo: "",
+      colorA: "#ffe4f1",
+      colorB: "#f4a5c4",
+    },
+    {
+      id: "sushi",
+      icon: "🍣",
+      price: 1100,
+      photo: "",
+      colorA: "#fff3d6",
+      colorB: "#ffb4a2",
+    },
+    {
+      id: "apothecary",
+      icon: "🌿",
+      price: 1200,
+      photo: "",
+      colorA: "#d8f3dc",
+      colorB: "#95d5b2",
+    },
+    {
+      id: "mistborn",
+      icon: "🪙",
+      price: 1300,
+      photo: "",
+      colorA: "#e7e5fb",
+      colorB: "#b8c0ff",
+    },
+    {
+      id: "encore",
+      icon: "🎧",
+      price: 1400,
+      photo: "",
+      colorA: "#ffd6e8",
+      colorB: "#c9b6ff",
     },
   ],
 
@@ -131,8 +172,8 @@ window.GAME_CONFIG = {
       onField: 6, // how many bugs are out at once
       netRadius: 36, // bigger = easier to catch
       fleeDistance: 110, // how close the net gets before bugs run (0 = never)
-      bellsPerCatch: 45,
-      winBonus: 150,
+      bellsPerCatch: 30, // a clean win (the goal, right on time) pays about 600
+      winBonus: 240,
       // glyph, points scored, and how fast that bug moves
       bugs: [
         { glyph: "🦋", points: 1, speed: 52, name: "Flower Butterfly" },
@@ -153,9 +194,9 @@ window.GAME_CONFIG = {
       perfectFrom: 0.78, // the golden ring window: wider = easier
       perfectTo: 1.02,
       overripeAt: 1.28, // past this the fruit drops by itself
-      bellsPerPerfect: 60,
-      bellsPerLate: 18, // picked slightly overripe
-      winBonus: 180,
+      bellsPerPerfect: 32,
+      bellsPerLate: 10, // picked slightly overripe
+      winBonus: 260,
       fruit: [
         { glyph: "🍊", name: "Valencia Orange" },
         { glyph: "🌸", name: "Orange Blossom" },
@@ -174,17 +215,19 @@ window.GAME_CONFIG = {
       waitFrom: 1.4, // shortest wait before a bite
       waitTo: 4.2, // longest wait before a bite
       winBonus: 200,
-      // chance is relative, so these do not have to add up to anything
+      // chance is relative, so these do not have to add up to anything.
+      // a typical catch is worth about 75, so five fish and the win bonus
+      // land near 600. The rare ones are a treat, not a payday.
       fish: [
-        { glyph: "🍣", chance: 28, bells: 70, name: "Salmon Nigiri" },
-        { glyph: "🐟", chance: 18, bells: 60, name: "Cádiz Sardine" },
-        { glyph: "🐠", chance: 16, bells: 90, name: "Tuna Sashimi" },
-        { glyph: "🦐", chance: 12, bells: 100, name: "Sweet Shrimp" },
-        { glyph: "🍳", chance: 10, bells: 80, name: "Tamago" },
-        { glyph: "🐙", chance: 7, bells: 140, name: "Octopus Nigiri" },
-        { glyph: "🦀", chance: 5, bells: 150, name: "Galician Crab" },
-        { glyph: "🪙", chance: 3, bells: 260, name: "Coin from the Mists" },
-        { glyph: "💎", chance: 1, bells: 400, name: "Bead of Atium" },
+        { glyph: "🍣", chance: 28, bells: 60, name: "Salmon Nigiri" },
+        { glyph: "🐟", chance: 18, bells: 50, name: "Cádiz Sardine" },
+        { glyph: "🐠", chance: 16, bells: 70, name: "Tuna Sashimi" },
+        { glyph: "🦐", chance: 12, bells: 80, name: "Sweet Shrimp" },
+        { glyph: "🍳", chance: 10, bells: 65, name: "Tamago" },
+        { glyph: "🐙", chance: 7, bells: 110, name: "Octopus Nigiri" },
+        { glyph: "🦀", chance: 5, bells: 120, name: "Galician Crab" },
+        { glyph: "🪙", chance: 3, bells: 170, name: "Coin from the Mists" },
+        { glyph: "💎", chance: 1, bells: 240, name: "Bead of Atium" },
       ],
     },
 
@@ -194,9 +237,9 @@ window.GAME_CONFIG = {
       fossils: 5, // how many are buried
       digs: 13, // how many holes she may dig
       goal: 4, // fossils needed to win
-      bellsPerFossil: 170,
-      bellsPerSpareDig: 25,
-      winBonus: 180,
+      bellsPerFossil: 80,
+      bellsPerSpareDig: 12,
+      winBonus: 240,
       treasures: [
         { glyph: "🪙", name: "Coin from the Mists" },
         { glyph: "💎", name: "Bead of Atium" },
@@ -215,8 +258,8 @@ window.GAME_CONFIG = {
       dodgeWidth: 24, // reach of the lightning: smaller = kinder
       spawnFrom: 0.34, // fastest gap between falling things
       spawnTo: 0.72, // slowest gap
-      bellsPerPoint: 1.2,
-      winBonus: 200,
+      bellsPerPoint: 0.8,
+      winBonus: 300,
       items: [
         { glyph: "☂️", points: 30, chance: 24, good: true, name: "Umbrella" },
         { glyph: "🌸", points: 22, chance: 14, good: true, name: "Sakura" },
@@ -250,9 +293,9 @@ window.GAME_CONFIG = {
 
     memory: {
       parMoves: 16, // moves she is allowed before the payout drops
-      parSeconds: 60, // same idea for the clock
-      baseBells: 800,
-      bellsPerExtraMove: 18,
+      parSeconds: 55, // same idea for the clock
+      baseBells: 620,
+      bellsPerExtraMove: 16,
       bellsPerExtraSecond: 4,
       minBells: 220,
       symbols: ["🌸", "🍣", "🥤", "🐰", "🌿", "🪙", "🦻", "💃"],
@@ -267,9 +310,9 @@ window.GAME_CONFIG = {
       goodWindow: 0.17,
       accuracyToWin: 0.7, // 0.7 = 70%
       minNotesToWin: 20,
-      bellsPerScore: 0.05, // score x this
-      bellsPerCombo: 2,
-      winBonus: 200,
+      bellsPerScore: 0.03, // score x this. a perfect song lands near 750
+      bellsPerCombo: 1,
+      winBonus: 240,
       laneKeys: ["d", "f", "j", "k"],
       // the bars cycle through these lane patterns
       patterns: [
@@ -444,7 +487,7 @@ window.GAME_TEXT = {
     "Oh! You made it! Welcome to Sakura Island, {name}!",
     "I'm {host}, the mayor, the shopkeeper and the entire tourism office.",
     "Today is your birthday, so the island made you a deal: play, earn Bells, and I'll hand over the presents hidden behind my counter.",
-    "Two of them. Real ones. I'm not even kidding.",
+    "Seven of them, one at a time. The sneakers and the jacket are real. I'm not even kidding.",
   ],
   dlg_first_bells: [
     "Look at all those Bells! The shop is that pink building on the map.",
@@ -472,6 +515,31 @@ window.GIFT_TEXT = {
     tagline: "Spain in the rain. You'll hear all of it.",
     note: "Closer to a mistcloak than a raincoat, which feels right. Wear it when Spain turns grey, turn the hearing aids up, and let Bad Bunny and Bad Gyal fight the weather. I'll be right next to you.",
   },
+  bouquet: {
+    name: "A Bouquet with Your Name",
+    tagline: "Flowers. The real kind, not the pixel ones.",
+    note: "Every flower on the island was practice. These ones you can put in water. I paid attention to the ones you stop to look at.",
+  },
+  sushi: {
+    name: "Sushi Night",
+    tagline: "Sit down. I'll order too much.",
+    note: "Salmon nigiri, the extra tamago, and the seat next to mine. This one isn't a picture of dinner. It's dinner.",
+  },
+  apothecary: {
+    name: "Maomao's Apothecary Box",
+    tagline: "The books, and a little box of herbs to read them with.",
+    note: "For the girl who would absolutely taste the suspicious mushroom. Please don't. The stories are enough, and I'll read the good parts out loud.",
+  },
+  mistborn: {
+    name: "Coins from the Mists",
+    tagline: "The books, and one coin for your pocket.",
+    note: "So you can disappear into the mists whenever you like, and still find your way back. I'll be on the other side of the page.",
+  },
+  encore: {
+    name: "Encore Night",
+    tagline: "Bad Bunny, then Bad Gyal. Hearing aids up.",
+    note: "A night that is loud on purpose, so you can hear all of it. If Spain is raining, we dance inside. I'll take the second verse.",
+  },
 };
 
 /* ------------------------------------------------------------------
@@ -481,6 +549,6 @@ window.GIFT_TEXT = {
 window.LETTER_TEXT = [
   "Happy birthday, {name}.",
   "I built you an island because I wanted your present to last longer than the five seconds it takes to open a box.",
-  "You caught bugs in the flowers, fished up sushi, dug a coin out of the mist, kept a concert loud enough to hear, and found both presents. They are real, and they are already waiting for you.",
+  "You caught bugs in the flowers, fished up sushi, dug a coin out of the mist, and kept a concert loud enough to hear. The sneakers and the jacket are real, and so is the rest of the counter: flowers, dinner, books, and a night with the volume up.",
   "Thank you for every ordinary day you turn into a good one. Here's to another year of walks, rain, and you.",
 ];

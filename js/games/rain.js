@@ -11,8 +11,8 @@
     dodgeWidth: 24,
     spawnFrom: 0.34,
     spawnTo: 0.72,
-    bellsPerPoint: 1.2,
-    winBonus: 200,
+    bellsPerPoint: 0.8,
+    winBonus: 300,
     items: [
       { glyph: "☂️", points: 30, chance: 24, good: true, name: "Umbrella" },
       { glyph: "🌸", points: 22, chance: 14, good: true, name: "Sakura" },

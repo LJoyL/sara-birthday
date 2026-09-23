@@ -28,8 +28,9 @@ No build step, no dependencies, no assets to download. Open `index.html` and pla
    redeemed in the order they appear: the next one stays locked until the one before it is unwrapped.
    Tap a present three times to open it. Its name stays a secret in the shop until that animation
    finishes, and only then does the next present unlock.
-6. Unwrap both presents and a 🎆 plaza appears on the map with the birthday letter, a photo
-   slideshow and fireworks.
+6. Unwrap every present and a 🎆 plaza appears on the map with the birthday letter, a photo
+   slideshow and fireworks. The sneakers and the jacket come first. After them: flowers, a sushi
+   night, an apothecary box, the Mistborn books, and an encore night.
 
 Progress is saved automatically in the browser (localStorage). The 📕 passport screen shows
 stamps, best scores and total Bells earned.
@@ -55,10 +56,14 @@ Everything you'd want to change lives in **`js/config.js`**, and nothing else ne
 - `GIFT_TEXT` — the name, tagline and note for each present.
 - `LETTER_TEXT` — the birthday letter shown in the finale.
 
-Adding a third present later is just another entry in `gifts` plus its `GIFT_TEXT` block. It stays
+Adding another present later is just another entry in `gifts` plus its `GIFT_TEXT` block. It stays
 locked until the one before it has been unwrapped.
 
-The mini-games and the two presents already mention the things she loves: Mistborn, The Apothecary
+A clean win at any mini-game pays about **600 Bells**. One lap of the island, played well, buys
+the sneakers, the jacket and the bouquet. A second lap finishes the counter. The rare fish and a
+perfect concert pay a little more, and a loss still pays something, just clearly less.
+
+The mini-games and the presents mention the things she loves: Mistborn, The Apothecary
 Diaries, Bad Bunny, Bad Gyal, hearing aids, Spain, sushi, the gym (and protein powder) and flowers.
 The wording all lives in `GAME_TEXT`, `GIFT_TEXT` and the named catches inside `games`, so any of it
 can be rewritten without touching the game code.

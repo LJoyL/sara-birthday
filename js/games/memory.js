@@ -2,9 +2,9 @@
 (function () {
   var DEFAULTS = {
     parMoves: 16,
-    parSeconds: 60,
-    baseBells: 800,
-    bellsPerExtraMove: 18,
+    parSeconds: 55,
+    baseBells: 620,
+    bellsPerExtraMove: 16,
     bellsPerExtraSecond: 4,
     minBells: 220,
     symbols: ["🌸", "🍣", "🥤", "🐰", "🌿", "🪙", "🦻", "💃"],

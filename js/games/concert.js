@@ -15,9 +15,9 @@
     goodWindow: 0.17,
     accuracyToWin: 0.7,
     minNotesToWin: 20,
-    bellsPerScore: 0.05,
-    bellsPerCombo: 2,
-    winBonus: 200,
+    bellsPerScore: 0.03,
+    bellsPerCombo: 1,
+    winBonus: 240,
     laneKeys: ["d", "f", "j", "k"],
     patterns: [
       [0, 1, 2, 3],

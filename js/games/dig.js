@@ -6,9 +6,9 @@
     fossils: 5,
     digs: 13,
     goal: 4,
-    bellsPerFossil: 170,
-    bellsPerSpareDig: 25,
-    winBonus: 180,
+    bellsPerFossil: 80,
+    bellsPerSpareDig: 12,
+    winBonus: 240,
     treasures: [
       { glyph: "🪙", name: "Coin from the Mists" },
       { glyph: "💎", name: "Bead of Atium" },

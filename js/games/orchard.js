@@ -11,9 +11,9 @@
     perfectFrom: 0.78,
     perfectTo: 1.02,
     overripeAt: 1.28,
-    bellsPerPerfect: 60,
-    bellsPerLate: 18,
-    winBonus: 180,
+    bellsPerPerfect: 32,
+    bellsPerLate: 10,
+    winBonus: 260,
     fruit: [
       { glyph: "🍊", name: "Valencia Orange" },
       { glyph: "🌸", name: "Orange Blossom" },

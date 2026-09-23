@@ -8,8 +8,8 @@
     onField: 6,
     netRadius: 36,
     fleeDistance: 110,
-    bellsPerCatch: 45,
-    winBonus: 150,
+    bellsPerCatch: 30,
+    winBonus: 240,
     bugs: [
       { glyph: "🦋", points: 1, speed: 52, name: "Flower Butterfly" },
       { glyph: "🐞", points: 1, speed: 44, name: "Ladybug" },
