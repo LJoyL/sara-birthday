@@ -47,6 +47,9 @@ window.GAME_CONFIG = {
   },
 
   // The real presents, wrapped inside the game.
+  // They are redeemed in this order: the next one stays locked until the
+  // one before it has been unwrapped. The shop keeps a present's name
+  // hidden until its opening animation has finished.
   // price = how many Bells she needs to redeem it at the shop.
   // photo = optional path to a real photo, e.g. "assets/gifts/shoes.jpg".
   //         If the file is missing the game quietly falls back to the emoji.
@@ -94,12 +97,12 @@ window.GAME_CONFIG = {
       winBonus: 150,
       // glyph, points scored, and how fast that bug moves
       bugs: [
-        { glyph: "🦋", points: 1, speed: 52 },
-        { glyph: "🐞", points: 1, speed: 44 },
-        { glyph: "🐝", points: 1, speed: 74 },
-        { glyph: "🦗", points: 1, speed: 66 },
-        { glyph: "🐛", points: 1, speed: 30 },
-        { glyph: "🦂", points: 2, speed: 86 },
+        { glyph: "🦋", points: 1, speed: 52, name: "Flower Butterfly" },
+        { glyph: "🐞", points: 1, speed: 44, name: "Ladybug" },
+        { glyph: "🐝", points: 1, speed: 78, name: "Protein Bee" },
+        { glyph: "🦗", points: 1, speed: 66, name: "Mist Cricket" },
+        { glyph: "🐛", points: 1, speed: 30, name: "Herb Caterpillar" },
+        { glyph: "🐰", points: 2, speed: 90, name: "Bad Bunny" },
       ],
     },
 
@@ -115,7 +118,15 @@ window.GAME_CONFIG = {
       bellsPerPerfect: 60,
       bellsPerLate: 18, // picked slightly overripe
       winBonus: 180,
-      fruit: ["🍑", "🍊", "🍎", "🍐", "🍒"],
+      fruit: [
+        { glyph: "🍊", name: "Valencia Orange" },
+        { glyph: "🌸", name: "Orange Blossom" },
+        { glyph: "🌺", name: "Carnation" },
+        { glyph: "🌷", name: "Tulip" },
+        { glyph: "🌿", name: "Maomao's Herb" },
+        { glyph: "🍄", name: "Curious Mushroom" },
+        { glyph: "🍑", name: "Peach" },
+      ],
     },
 
     fishing: {
@@ -127,13 +138,15 @@ window.GAME_CONFIG = {
       winBonus: 200,
       // chance is relative, so these do not have to add up to anything
       fish: [
-        { glyph: "🐟", chance: 40, bells: 60, name: "River Fish" },
-        { glyph: "🐠", chance: 22, bells: 90, name: "Ribbon Fish" },
-        { glyph: "🐡", chance: 14, bells: 120, name: "Puffer" },
-        { glyph: "🦐", chance: 10, bells: 100, name: "Sweet Shrimp" },
-        { glyph: "🦀", chance: 8, bells: 140, name: "Sunset Crab" },
-        { glyph: "🐙", chance: 4, bells: 220, name: "Shy Octopus" },
-        { glyph: "👑", chance: 2, bells: 400, name: "Tiny Crown (?!)" },
+        { glyph: "🍣", chance: 28, bells: 70, name: "Salmon Nigiri" },
+        { glyph: "🐟", chance: 18, bells: 60, name: "Cádiz Sardine" },
+        { glyph: "🐠", chance: 16, bells: 90, name: "Tuna Sashimi" },
+        { glyph: "🦐", chance: 12, bells: 100, name: "Sweet Shrimp" },
+        { glyph: "🍳", chance: 10, bells: 80, name: "Tamago" },
+        { glyph: "🐙", chance: 7, bells: 140, name: "Octopus Nigiri" },
+        { glyph: "🦀", chance: 5, bells: 150, name: "Galician Crab" },
+        { glyph: "🪙", chance: 3, bells: 260, name: "Coin from the Mists" },
+        { glyph: "💎", chance: 1, bells: 400, name: "Bead of Atium" },
       ],
     },
 
@@ -146,7 +159,13 @@ window.GAME_CONFIG = {
       bellsPerFossil: 170,
       bellsPerSpareDig: 25,
       winBonus: 180,
-      treasures: ["🦴", "🦕", "🐚", "🗿", "💎"],
+      treasures: [
+        { glyph: "🪙", name: "Coin from the Mists" },
+        { glyph: "💎", name: "Bead of Atium" },
+        { glyph: "🌿", name: "Maomao's Herb" },
+        { glyph: "🌸", name: "Pressed Flower" },
+        { glyph: "🪭", name: "Fan from Seville" },
+      ],
     },
 
     rain: {
@@ -161,11 +180,33 @@ window.GAME_CONFIG = {
       bellsPerPoint: 1.2,
       winBonus: 200,
       items: [
-        { glyph: "☂️", points: 30, chance: 34, good: true },
-        { glyph: "🍂", points: 15, chance: 26, good: true },
-        { glyph: "🌸", points: 20, chance: 16, good: true },
-        { glyph: "⭐", points: 60, chance: 8, good: true },
-        { glyph: "⚡", points: 0, chance: 13, good: false },
+        { glyph: "☂️", points: 30, chance: 24, good: true, name: "Umbrella" },
+        { glyph: "🌸", points: 22, chance: 14, good: true, name: "Sakura" },
+        { glyph: "🌺", points: 22, chance: 12, good: true, name: "Carnation" },
+        {
+          glyph: "🪭",
+          points: 28,
+          chance: 12,
+          good: true,
+          name: "Spanish Fan",
+        },
+        {
+          glyph: "🥤",
+          points: 40,
+          chance: 10,
+          good: true,
+          name: "Protein Shake",
+        },
+        { glyph: "🍣", points: 34, chance: 8, good: true, name: "Sushi" },
+        {
+          glyph: "🌫️",
+          points: 48,
+          chance: 7,
+          good: true,
+          name: "Pocket of Mist",
+        },
+        { glyph: "⭐", points: 60, chance: 6, good: true, name: "Star" },
+        { glyph: "⚡", points: 0, chance: 13, good: false, name: "Lightning" },
       ],
     },
 
@@ -176,7 +217,7 @@ window.GAME_CONFIG = {
       bellsPerExtraMove: 18,
       bellsPerExtraSecond: 4,
       minBells: 220,
-      symbols: ["🌸", "🍡", "🐱", "⭐", "🍜", "🎐", "🦊", "☕"],
+      symbols: ["🌸", "🍣", "🥤", "🐰", "🌿", "🪙", "🦻", "💃"],
     },
 
     concert: {
@@ -255,16 +296,18 @@ window.GAME_TEXT = {
   // --- locations / mini-games ---
   bugs_name: "Flower Meadow",
   bugs_title: "Bug Catching",
-  bugs_desc: "Chase the bugs with your net before the sun goes down.",
+  bugs_desc:
+    "The meadow is all flowers, with a mist cricket, a protein bee, and one bunny who is absolutely not a bug.",
   bugs_hint:
     "Move with your finger, mouse or arrow keys. Click / tap / space to swing the net.",
   bugs_caught: "Caught",
 
   orchard_name: "Peach Orchard",
   orchard_title: "Perfect Picking",
-  orchard_desc: "Fruit is best the second it ripens. Not before, not after.",
+  orchard_desc:
+    "Maomao would wait for this exact moment. Spanish oranges, orange blossom, carnations, herbs and one curious mushroom.",
   orchard_hint:
-    "Tap a fruit the moment its ring turns golden. Too early is a snack, too late is jam.",
+    "Tap a fruit, herb or flower the moment its ring turns golden. Too early is a snack, too late is jam.",
   orchard_perfect: "Perfect",
   orchard_picked: "Picked",
   orchard_early: "Too soon!",
@@ -274,7 +317,7 @@ window.GAME_TEXT = {
   fishing_name: "Quiet River",
   fishing_title: "Fishing",
   fishing_desc:
-    "Wait for the bite, then reel it in. Patience, always patience.",
+    "The river is serving sushi, plus a sardine that swears it is from Cádiz. Something older is biting too. Wait for it.",
   fishing_hint:
     "Click / tap / space to cast. When the bobber goes ! reel it in fast!",
   fishing_casts: "Casts left",
@@ -288,7 +331,7 @@ window.GAME_TEXT = {
   dig_name: "Fossil Dig",
   dig_title: "Fossil Dig",
   dig_desc:
-    "Something old is buried here. The dirt will tell you how close you are.",
+    "Coins from the mists, a bead of atium, dried herbs, a pressed flower, a fan from Seville. The dirt says how close you are.",
   dig_hint:
     "Dig a tile. A number means that many fossils are touching that tile.",
   dig_found: "Fossils",
@@ -297,12 +340,13 @@ window.GAME_TEXT = {
   rain_name: "Rainy Path",
   rain_title: "Rainy Day Dash",
   rain_desc:
-    "A storm rolled in. Catch umbrellas and stars, dodge the thunderclouds.",
+    "Catch flowers, a Spanish fan, sushi and a protein shake. Pocket the mist. Dodge the lightning.",
   rain_hint: "Move with your finger, mouse or arrow keys.",
 
   memory_name: "Cozy Café",
   memory_title: "Memory Match",
-  memory_desc: "Coco mixed up the café cards again. Find every pair.",
+  memory_desc:
+    "Coco shuffled sushi, flowers, a protein shake, Bad Bunny, Bad Gyal, a hearing aid, Maomao's herbs and a coin from the mists.",
   memory_hint: "Flip two cards. If they match, they stay open.",
   memory_moves: "Moves",
   memory_pairs: "Pairs",
@@ -310,8 +354,9 @@ window.GAME_TEXT = {
   concert_name: "K.K. Concert",
   concert_title: "Saturday Night Concert",
   concert_desc:
-    "K.K. is warming up. Keep the beat and the whole island sings along.",
-  concert_hint: "Tap a lane (or press D F J K) when its note reaches the line.",
+    "K.K. starts the night, then Bad Bunny takes a set and Bad Gyal takes the encore. Hearing aids up.",
+  concert_hint:
+    "Hearing aids up. Tap a lane (or press D F J K) when its note reaches the line. Bad Bunny, then Bad Gyal.",
   concert_combo: "Combo",
   concert_perfect: "Perfect",
   concert_good: "Good",
@@ -326,7 +371,10 @@ window.GAME_TEXT = {
 
   // --- shop ---
   shop_title: "Coco's Gift Shop",
-  shop_intro: "Two presents are waiting behind the counter. Bells, please!",
+  shop_intro:
+    "The presents come out one at a time. Unwrap one, and the next one wakes up.",
+  shop_need_previous: "Unwrap the previous present first",
+  shop_opening: "Unwrapping...",
   shop_need_more: "Not enough Bells yet",
   shop_redeem: "Redeem",
   shop_claimed: "Unwrapped",
@@ -377,14 +425,14 @@ window.GAME_TEXT = {
 
 window.GIFT_TEXT = {
   shoes: {
-    name: "Cherry Blossom Sneakers",
-    tagline: "A real pair. Waiting for you in the real world.",
-    note: "For every walk we still have to take together. Try them on, they are yours.",
+    name: "Gym-Day Sneakers",
+    tagline: "For the gym, the flowers, and the walk after sushi.",
+    note: "A real pair. Protein powder is in the bag, and little flowers sit where you'll see them between sets. Try them on, they are yours.",
   },
   jacket: {
-    name: "Rainy Day Jacket",
-    tagline: "So the weather stops having an opinion about our plans.",
-    note: "Now the rain is just a nice sound. Go outside anyway, I'll be right next to you.",
+    name: "Misty Rain Jacket",
+    tagline: "Spain in the rain. You'll hear all of it.",
+    note: "Closer to a mistcloak than a raincoat, which feels right. Wear it when Spain turns grey, turn the hearing aids up, and let Bad Bunny and Bad Gyal fight the weather. I'll be right next to you.",
   },
 };
 
@@ -395,6 +443,6 @@ window.GIFT_TEXT = {
 window.LETTER_TEXT = [
   "Happy birthday, {name}.",
   "I built you an island because I wanted your present to last longer than the five seconds it takes to open a box.",
-  "You caught bugs, you fished, you dug up fossils, you played a whole concert, you beat a storm, and you found both presents. They are real, and they are already waiting for you.",
+  "You caught bugs in the flowers, fished up sushi, dug a coin out of the mist, kept a concert loud enough to hear, and found both presents. They are real, and they are already waiting for you.",
   "Thank you for every ordinary day you turn into a good one. Here's to another year of walks, rain, and you.",
 ];

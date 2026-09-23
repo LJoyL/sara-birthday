@@ -790,6 +790,10 @@ p {
   background: #eaffe0;
 }
 
+.gift-card.locked {
+  opacity: 0.72;
+}
+
 .gift-tag {
   font-size: 0.78rem;
   font-weight: 800;

@@ -32,6 +32,7 @@
       seen: {},
       finaleSeen: false,
       muted: !window.Settings.option("soundOn"),
+      opening: null,
     };
   }
 
@@ -57,6 +58,8 @@
       base.seen = saved.seen || {};
       base.finaleSeen = !!saved.finaleSeen;
       base.muted = !!saved.muted;
+      base.opening =
+        saved.opening && !base.gifts[saved.opening] ? saved.opening : null;
       return base;
     } catch (e) {
       return base;
@@ -101,10 +104,18 @@
     }).length;
   }
 
+  /** The present she is allowed to buy next, or null once they are all open. */
+  function nextGift() {
+    if (state.opening) return null;
+    for (var i = 0; i < cfg.gifts.length; i++) {
+      if (!state.gifts[cfg.gifts[i].id]) return cfg.gifts[i];
+    }
+    return null;
+  }
+
   function canAffordAny() {
-    return cfg.gifts.some(function (g) {
-      return !state.gifts[g.id] && state.bells >= g.price;
-    });
+    var gift = nextGift();
+    return !!gift && state.bells >= gift.price;
   }
 
   function setBells(value) {
@@ -346,6 +357,38 @@
     el("topbar").hidden = false;
     window.UI.showScreen("shop");
     renderShop();
+    resumeOpening();
+  }
+
+  function finishOpening() {
+    var id = state.opening;
+    if (!id || state.gifts[id]) return;
+    state.gifts[id] = true;
+    state.opening = null;
+    save();
+    renderShop();
+    refreshMap();
+  }
+
+  function afterUnwrapClosed() {
+    if (allGiftsClaimed() && !state.finaleSeen) {
+      window.UI.toast("🎆 " + t("finale_ready"), 2600);
+    }
+  }
+
+  /** Continues a present that was paid for but not opened yet. */
+  function resumeOpening() {
+    var id = state.opening;
+    if (!id) return;
+    if (state.gifts[id] || !window.Gifts.byId(id)) {
+      state.opening = null;
+      save();
+      return;
+    }
+    window.Gifts.unwrap(id, {
+      onOpened: finishOpening,
+      onClosed: afterUnwrapClosed,
+    });
   }
 
   function renderShop() {
@@ -368,18 +411,15 @@
       {
         onRedeem: function (giftId) {
           var gift = window.Gifts.byId(giftId);
-          if (state.bells < gift.price || state.gifts[giftId]) return;
+          var index = cfg.gifts.indexOf(gift);
+          if (!gift || state.opening || state.gifts[giftId]) return;
+          if (index > 0 && !state.gifts[cfg.gifts[index - 1].id]) return;
+          if (state.bells < gift.price) return;
           setBells(state.bells - gift.price);
-          state.gifts[giftId] = true;
+          state.opening = giftId;
           save();
           renderShop();
-          window.Gifts.unwrap(giftId, function () {
-            renderShop();
-            refreshMap();
-            if (allGiftsClaimed() && !state.finaleSeen) {
-              window.UI.toast("🎆 " + t("finale_ready"), 2600);
-            }
-          });
+          resumeOpening();
         },
         onView: function (giftId) {
           window.Gifts.view(giftId);

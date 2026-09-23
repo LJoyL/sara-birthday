@@ -7,7 +7,7 @@
     bellsPerExtraMove: 18,
     bellsPerExtraSecond: 4,
     minBells: 220,
-    symbols: ["🌸", "🍡", "🐱", "⭐", "🍜", "🎐", "🦊", "☕"],
+    symbols: ["🌸", "🍣", "🥤", "🐰", "🌿", "🪙", "🦻", "💃"],
   };
 
   /** Keeps the board close to square whatever number of pairs is configured. */

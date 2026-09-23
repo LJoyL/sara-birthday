@@ -11,12 +11,12 @@
     bellsPerCatch: 45,
     winBonus: 150,
     bugs: [
-      { glyph: "🦋", points: 1, speed: 52 },
-      { glyph: "🐞", points: 1, speed: 44 },
-      { glyph: "🐝", points: 1, speed: 74 },
-      { glyph: "🦗", points: 1, speed: 66 },
-      { glyph: "🐛", points: 1, speed: 30 },
-      { glyph: "🦂", points: 2, speed: 86 },
+      { glyph: "🦋", points: 1, speed: 52, name: "Flower Butterfly" },
+      { glyph: "🐞", points: 1, speed: 44, name: "Ladybug" },
+      { glyph: "🐝", points: 1, speed: 78, name: "Protein Bee" },
+      { glyph: "🦗", points: 1, speed: 66, name: "Mist Cricket" },
+      { glyph: "🐛", points: 1, speed: 30, name: "Herb Caterpillar" },
+      { glyph: "🐰", points: 2, speed: 90, name: "Bad Bunny" },
     ],
   };
 
@@ -91,6 +91,15 @@
       }
       updateHud();
 
+      var hintTimer = null;
+      function flashCatch(name) {
+        api.setHint(t("bugs_caught") + ": " + name);
+        clearTimeout(hintTimer);
+        hintTimer = setTimeout(function () {
+          if (!finished) api.setHint(t("bugs_hint"));
+        }, 1400);
+      }
+
       function swing() {
         if (finished || net.swing > 0) return;
         // a tap should land where the finger is, not where the net lagged behind
@@ -100,6 +109,7 @@
         }
         net.swing = 0.28;
         var hit = false;
+        var named = "";
         for (var i = bugs.length - 1; i >= 0; i--) {
           var bug = bugs[i];
           var dx = bug.x - net.x,
@@ -109,6 +119,7 @@
             caught++;
             score += bug.kind.points;
             hit = true;
+            if (bug.kind.name) named = bug.kind.name;
             for (var s = 0; s < 12; s++) {
               var a = Math.random() * Math.PI * 2;
               sparks.push({
@@ -124,6 +135,7 @@
           }
         }
         window.Sound.play(hit ? "catch" : "tap");
+        if (named) flashCatch(named);
         updateHud();
       }
 

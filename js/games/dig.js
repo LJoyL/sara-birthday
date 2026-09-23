@@ -9,7 +9,13 @@
     bellsPerFossil: 170,
     bellsPerSpareDig: 25,
     winBonus: 180,
-    treasures: ["🦴", "🦕", "🐚", "🗿", "💎"],
+    treasures: [
+      { glyph: "🪙", name: "Coin from the Mists" },
+      { glyph: "💎", name: "Bead of Atium" },
+      { glyph: "🌿", name: "Maomao's Herb" },
+      { glyph: "🌸", name: "Pressed Flower" },
+      { glyph: "🪭", name: "Fan from Seville" },
+    ],
   };
 
   window.Games.dig = {
@@ -51,8 +57,20 @@
         spots[j] = tmp;
       }
       spots.slice(0, FOSSILS).forEach(function (index, n) {
-        buried[index] = TREASURE[n % TREASURE.length];
+        var raw = TREASURE[n % TREASURE.length];
+        buried[index] =
+          typeof raw === "string" ? { glyph: raw, name: "" } : raw;
       });
+
+      var hintTimer = null;
+      function flashName(name) {
+        if (!name) return;
+        api.setHint(name);
+        clearTimeout(hintTimer);
+        hintTimer = setTimeout(function () {
+          if (!finished) api.setHint(t("dig_hint"));
+        }, 1600);
+      }
 
       function neighbours(index) {
         var cx = index % COLS;
@@ -118,7 +136,9 @@
           found++;
           cell.classList.add("fossil");
           cell.innerHTML =
-            '<span class="dig-face">' + buried[index] + "</span>";
+            '<span class="dig-face">' + buried[index].glyph + "</span>";
+          if (buried[index].name) cell.title = buried[index].name;
+          flashName(buried[index].name);
           window.Sound.play("catch");
           var r = cell.getBoundingClientRect();
           window.UI.burst(r.left + r.width / 2, r.top + r.height / 2, 22, [
@@ -146,7 +166,7 @@
           if (dug[index] || !buried[index]) return;
           cell.classList.add("missed");
           cell.innerHTML =
-            '<span class="dig-face">' + buried[index] + "</span>";
+            '<span class="dig-face">' + buried[index].glyph + "</span>";
         });
       }
 

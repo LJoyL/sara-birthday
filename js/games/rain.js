@@ -14,11 +14,27 @@
     bellsPerPoint: 1.2,
     winBonus: 200,
     items: [
-      { glyph: "☂️", points: 30, chance: 34, good: true },
-      { glyph: "🍂", points: 15, chance: 26, good: true },
-      { glyph: "🌸", points: 20, chance: 16, good: true },
-      { glyph: "⭐", points: 60, chance: 8, good: true },
-      { glyph: "⚡", points: 0, chance: 13, good: false },
+      { glyph: "☂️", points: 30, chance: 24, good: true, name: "Umbrella" },
+      { glyph: "🌸", points: 22, chance: 14, good: true, name: "Sakura" },
+      { glyph: "🌺", points: 22, chance: 12, good: true, name: "Carnation" },
+      { glyph: "🪭", points: 28, chance: 12, good: true, name: "Spanish Fan" },
+      {
+        glyph: "🥤",
+        points: 40,
+        chance: 10,
+        good: true,
+        name: "Protein Shake",
+      },
+      { glyph: "🍣", points: 34, chance: 8, good: true, name: "Sushi" },
+      {
+        glyph: "🌫️",
+        points: 48,
+        chance: 7,
+        good: true,
+        name: "Pocket of Mist",
+      },
+      { glyph: "⭐", points: 60, chance: 6, good: true, name: "Star" },
+      { glyph: "⚡", points: 0, chance: 13, good: false, name: "Lightning" },
     ],
   };
 
@@ -168,7 +184,12 @@
               items.splice(i, 1);
               if (it.kind.good) {
                 score += it.kind.points;
-                pop(it.x, it.y, "+" + it.kind.points, "#ffe9a8");
+                pop(
+                  it.x,
+                  it.y,
+                  it.kind.name || "+" + it.kind.points,
+                  "#ffe9a8",
+                );
                 window.Sound.play("coin");
                 updateHud();
               } else if (player.hurt <= 0) {

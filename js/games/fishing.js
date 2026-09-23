@@ -10,13 +10,15 @@
     waitTo: 4.2,
     winBonus: 200,
     fish: [
-      { glyph: "🐟", chance: 40, bells: 60, name: "River Fish" },
-      { glyph: "🐠", chance: 22, bells: 90, name: "Ribbon Fish" },
-      { glyph: "🐡", chance: 14, bells: 120, name: "Puffer" },
-      { glyph: "🦐", chance: 10, bells: 100, name: "Sweet Shrimp" },
-      { glyph: "🦀", chance: 8, bells: 140, name: "Sunset Crab" },
-      { glyph: "🐙", chance: 4, bells: 220, name: "Shy Octopus" },
-      { glyph: "👑", chance: 2, bells: 400, name: "Tiny Crown (?!)" },
+      { glyph: "🍣", chance: 28, bells: 70, name: "Salmon Nigiri" },
+      { glyph: "🐟", chance: 18, bells: 60, name: "Cádiz Sardine" },
+      { glyph: "🐠", chance: 16, bells: 90, name: "Tuna Sashimi" },
+      { glyph: "🦐", chance: 12, bells: 100, name: "Sweet Shrimp" },
+      { glyph: "🍳", chance: 10, bells: 80, name: "Tamago" },
+      { glyph: "🐙", chance: 7, bells: 140, name: "Octopus Nigiri" },
+      { glyph: "🦀", chance: 5, bells: 150, name: "Galician Crab" },
+      { glyph: "🪙", chance: 3, bells: 260, name: "Coin from the Mists" },
+      { glyph: "💎", chance: 1, bells: 400, name: "Bead of Atium" },
     ],
   };
 

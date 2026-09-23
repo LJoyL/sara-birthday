@@ -24,8 +24,10 @@ No build step, no dependencies, no assets to download. Open `index.html` and pla
 
 4. Every run pays Bells, win or lose, so the island is never a dead end. All of the numbers
    in that table are settings you can change — see below.
-5. The 🎁 Gift Shop opens once **every** spot has been played to the end at least once. Each present is
-   unwrapped with a little ceremony (tap it three times), then revealed with a personal note.
+5. The 🎁 Gift Shop opens once **every** spot has been played to the end at least once. Presents are
+   redeemed in the order they appear: the next one stays locked until the one before it is unwrapped.
+   Tap a present three times to open it. Its name stays a secret in the shop until that animation
+   finishes, and only then does the next present unlock.
 6. Unwrap both presents and a 🎆 plaza appears on the map with the birthday letter, a photo
    slideshow and fireworks.
 
@@ -41,7 +43,7 @@ Everything you'd want to change lives in **`js/config.js`**, and nothing else ne
 
 - `playerName` / `fromName` — who's playing, who it's from.
 - `hostName` / `hostIcon` — the villager who guides her around.
-- `gifts` — the presents: emoji, Bell price, wrapping-paper colours, optional photo.
+- `gifts` — the presents, in the order she unwraps them: emoji, Bell price, wrapping-paper colours, optional photo.
 - `memories` — photos for the slideshow in the finale.
 - `options` — sound and petals on by default, the reset button, starting Bells, whether the
   shop stays locked until every spot is finished, and `spots`, the list of mini-games that
@@ -51,7 +53,13 @@ Everything you'd want to change lives in **`js/config.js`**, and nothing else ne
 - `GIFT_TEXT` — the name, tagline and note for each present.
 - `LETTER_TEXT` — the birthday letter shown in the finale.
 
-Adding a third present later is just another entry in `gifts` plus its `GIFT_TEXT` block.
+Adding a third present later is just another entry in `gifts` plus its `GIFT_TEXT` block. It stays
+locked until the one before it has been unwrapped.
+
+The mini-games and the two presents already mention the things she loves: Mistborn, The Apothecary
+Diaries, Bad Bunny, Bad Gyal, hearing aids, Spain, sushi, the gym (and protein powder) and flowers.
+The wording all lives in `GAME_TEXT`, `GIFT_TEXT` and the named catches inside `games`, so any of it
+can be rewritten without touching the game code.
 
 ### Difficulty and how fast she earns
 

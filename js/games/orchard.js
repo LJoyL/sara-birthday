@@ -14,7 +14,15 @@
     bellsPerPerfect: 60,
     bellsPerLate: 18,
     winBonus: 180,
-    fruit: ["🍑", "🍊", "🍎", "🍐", "🍒"],
+    fruit: [
+      { glyph: "🍊", name: "Valencia Orange" },
+      { glyph: "🌸", name: "Orange Blossom" },
+      { glyph: "🌺", name: "Carnation" },
+      { glyph: "🌷", name: "Tulip" },
+      { glyph: "🌿", name: "Maomao's Herb" },
+      { glyph: "🍄", name: "Curious Mushroom" },
+      { glyph: "🍑", name: "Peach" },
+    ],
   };
 
   window.Games.orchard = {
@@ -52,9 +60,25 @@
       var finished = false;
       var basket = { squash: 0 };
 
+      function fruitOf(entry) {
+        if (typeof entry === "string") return { glyph: entry, name: "" };
+        return { glyph: entry.glyph, name: entry.name || "" };
+      }
+
+      var hintTimer = null;
+      function flashName(name) {
+        if (!name) return;
+        api.setHint(name);
+        clearTimeout(hintTimer);
+        hintTimer = setTimeout(function () {
+          if (!finished) api.setHint(t("orchard_hint"));
+        }, 1400);
+      }
+
       function spawnFruit() {
         var tries = 0;
         var x, y;
+        var fruit = fruitOf(E.pick(S.fruit));
         do {
           x = E.rand(60, W - 60);
           y = E.rand(70, CANOPY_BOTTOM - 40);
@@ -63,7 +87,8 @@
         fruits.push({
           x: x,
           y: y,
-          glyph: E.pick(S.fruit),
+          glyph: fruit.glyph,
+          name: fruit.name,
           ripe: E.rand(0, 0.18),
           speed: E.rand(S.ripenFrom, S.ripenTo),
           sway: Math.random() * 6,
@@ -129,6 +154,7 @@
 
         picked++;
         basket.squash = 0.25;
+        flashName(hit.name);
         if (hit.ripe >= RIPE_FROM && hit.ripe <= RIPE_TO) {
           perfect++;
           score += 100;

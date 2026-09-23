@@ -19,15 +19,24 @@
     var esc = window.UI.esc;
     grid.innerHTML = "";
 
-    cfg.gifts.forEach(function (gift) {
+    cfg.gifts.forEach(function (gift, index) {
       var text = window.UI.giftText(gift.id);
       var claimed = !!state.gifts[gift.id];
+      var opening = state.opening === gift.id;
+      var prev = index > 0 ? cfg.gifts[index - 1] : null;
+      var prevReady = !prev || !!state.gifts[prev.id];
       var affordable = state.bells >= gift.price;
+      // A present stays a secret until its own opening animation has finished,
+      // and the next one stays locked until that moment too.
+      var revealed = claimed && !opening;
 
       var card = document.createElement("div");
-      card.className = "gift-card" + (claimed ? " claimed" : "");
+      card.className =
+        "gift-card" +
+        (revealed ? " claimed" : "") +
+        (!revealed && !prevReady ? " locked" : "");
 
-      if (claimed) {
+      if (revealed) {
         card.appendChild(
           window.UI.media(gift.photo, gift.icon, "gift-photo", "gift-emoji"),
         );
@@ -39,28 +48,36 @@
       }
 
       var title = document.createElement("h3");
-      title.textContent = claimed ? text.name : "???";
+      title.textContent = revealed ? text.name : "???";
       card.appendChild(title);
 
       var price = document.createElement("div");
       price.className = "gift-price";
-      if (claimed) {
+      if (revealed) {
         price.innerHTML =
           '<span class="gift-tag">' + esc(t("shop_claimed")) + "</span>";
+      } else if (opening) {
+        price.textContent = t("shop_opening");
       } else {
         price.textContent = "🔔 " + gift.price;
       }
       card.appendChild(price);
 
       var btn = document.createElement("button");
-      btn.className = "btn btn-small" + (claimed ? " btn-ghost" : "");
-      if (claimed) {
+      btn.className = "btn btn-small" + (revealed ? " btn-ghost" : "");
+      if (revealed) {
         btn.textContent = t("shop_view");
         btn.addEventListener("click", function () {
           handlers.onView(gift.id);
         });
+      } else if (opening) {
+        btn.textContent = t("shop_opening");
+        btn.disabled = true;
       } else if (lock.locked) {
         btn.textContent = t("shop_locked");
+        btn.disabled = true;
+      } else if (!prevReady) {
+        btn.textContent = t("shop_need_previous");
         btn.disabled = true;
       } else {
         btn.textContent = affordable ? t("shop_redeem") : t("shop_need_more");
@@ -74,8 +91,13 @@
     });
   }
 
-  /** Full unwrap ceremony. onDone runs when the modal closes. */
-  function unwrap(giftId, onDone) {
+  /**
+   * Full unwrap ceremony.
+   * hooks.onOpened runs once the lid has flown off (the gift may be shown).
+   * hooks.onClosed runs when she dismisses the revealed present.
+   */
+  function unwrap(giftId, hooks) {
+    hooks = hooks || {};
     var gift = giftById(giftId);
     if (!gift) return;
     var t = window.UI.t;
@@ -120,7 +142,8 @@
             [gift.colorA, gift.colorB, "#fff1a8"],
           );
           setTimeout(function () {
-            showGift(gift, text, onDone);
+            if (hooks.onOpened) hooks.onOpened();
+            showGift(gift, text, hooks.onClosed);
           }, 620);
         });
       },
