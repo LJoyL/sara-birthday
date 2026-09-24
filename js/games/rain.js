@@ -7,8 +7,8 @@
     goal: 350,
     hearts: 3,
     mercySeconds: 1.2,
-    catchWidth: 38,
-    dodgeWidth: 24,
+    catchWidth: 44,
+    dodgeWidth: 26,
     spawnFrom: 0.34,
     spawnTo: 0.72,
     bellsPerPoint: 0.8,
@@ -116,7 +116,7 @@
           vy: E.rand(120, 200) + (DURATION - timeLeft) * 1.6,
           spin: E.rand(-1.4, 1.4),
           rot: 0,
-          size: kind.good ? 30 : 34,
+          size: kind.good ? 38 : 42,
         });
       }
 
@@ -263,15 +263,21 @@
           }
 
           items.forEach(function (it) {
-            if (!it.kind.good) {
-              ctx.save();
-              ctx.globalAlpha = 0.35;
-              ctx.fillStyle = "#fff59a";
-              ctx.beginPath();
-              ctx.arc(it.x, it.y, 22, 0, Math.PI * 2);
-              ctx.fill();
-              ctx.restore();
-            }
+            ctx.save();
+            ctx.translate(it.x, it.y);
+            ctx.rotate(it.rot);
+            ctx.beginPath();
+            ctx.arc(0, 0, it.size * 0.72, 0, Math.PI * 2);
+            ctx.fillStyle = it.kind.good
+              ? "rgba(255,255,255,0.95)"
+              : "rgba(255,236,120,0.95)";
+            ctx.fill();
+            ctx.lineWidth = 2.4;
+            ctx.strokeStyle = it.kind.good
+              ? "rgba(90,68,51,0.18)"
+              : "rgba(210,140,20,0.55)";
+            ctx.stroke();
+            ctx.restore();
             E.emoji(ctx, it.kind.glyph, it.x, it.y, it.size, it.rot);
           });
 

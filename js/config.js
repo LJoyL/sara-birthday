@@ -20,10 +20,10 @@ window.GAME_CONFIG = {
   playerName: "Sara",
 
   // Who the island is from (signature of the birthday letter)
-  fromName: "Me",
+  fromName: "Léo",
 
   // The little villager who guides the player
-  hostName: "Coco",
+  hostName: "Poupoune",
   hostIcon: "🐱",
 
   options: {
@@ -37,7 +37,7 @@ window.GAME_CONFIG = {
     showResetButton: true,
 
     // The gift shop stays shut until she has finished a round at every spot
-    requireAllGamesBeforeGifts: true,
+    requireAllGamesBeforeGifts: false,
 
     // Bells she starts with, if you want to give her a head start
     startingBells: 0,
@@ -60,15 +60,15 @@ window.GAME_CONFIG = {
     volume: 0.75,
 
     tracks: {
-      island: { name: "Island Morning", src: "" },
-      meadow: { name: "Meadow Skip", src: "" },
-      garden: { name: "Herb Garden", src: "" },
-      river: { name: "Quiet River", src: "" },
-      dig: { name: "Buried Coins", src: "" },
-      rain: { name: "Rain on the Roof", src: "" },
-      cafe: { name: "Café Music Box", src: "" },
-      concert: { name: "Soft Encore", src: "" },
-      reward: { name: "You Did It", src: "" },
+      island: { name: "Island Morning", src: "assets/island.mp3" },
+      meadow: { name: "Meadow Skip", src: "assets/meadow.mp3" },
+      garden: { name: "Herb Garden", src: "assets/garden.mp3" },
+      river: { name: "Quiet River", src: "assets/river.mp3" },
+      dig: { name: "Buried Coins", src: "assets/buried.mp3" },
+      rain: { name: "Rain on the Roof", src: "assets/rain.mp3" },
+      cafe: { name: "Café Music Box", src: "assets/cafe.mp3" },
+      concert: { name: "Soft Encore", src: "assets/soft.mp3" },
+      reward: { name: "You Did It", src: "assets/reward.mp3" },
       // ours: { name: "Our Song", src: "assets/music/ours.mp3" },
     },
 
@@ -94,22 +94,12 @@ window.GAME_CONFIG = {
   //         If the file is missing the game quietly falls back to the emoji.
   gifts: [
     {
-      id: "shoes",
-      icon: "👟",
-      price: 900,
-      // photo: "assets/gifts/shoes.jpg",
+      id: "crown",
+      icon: "👑",
+      price: 500,
       photo: "",
-      colorA: "#ffd6e8",
-      colorB: "#ff9ec4",
-    },
-    {
-      id: "jacket",
-      icon: "🧥",
-      price: 1100,
-      // photo: "assets/gifts/jacket.jpg",
-      photo: "",
-      colorA: "#cfe9ff",
-      colorB: "#8fc8ff",
+      colorA: "#f4a5c4",
+      colorB: "#ffe4f1",
     },
     {
       id: "bouquet",
@@ -120,36 +110,44 @@ window.GAME_CONFIG = {
       colorB: "#f4a5c4",
     },
     {
-      id: "sushi",
-      icon: "🍣",
-      price: 1100,
+      id: "massage",
+      icon: "💆",
+      price: 800,
       photo: "",
-      colorA: "#fff3d6",
-      colorB: "#ffb4a2",
+      colorA: "#ffe4f1",
+      colorB: "#f4a5c4",
     },
     {
-      id: "apothecary",
-      icon: "🌿",
-      price: 1200,
-      photo: "",
-      colorA: "#d8f3dc",
-      colorB: "#95d5b2",
-    },
-    {
-      id: "mistborn",
-      icon: "🪙",
-      price: 1300,
-      photo: "",
-      colorA: "#e7e5fb",
-      colorB: "#b8c0ff",
-    },
-    {
-      id: "encore",
-      icon: "🎧",
-      price: 1400,
+      id: "shoes",
+      icon: "👟",
+      price: 1500,
       photo: "",
       colorA: "#ffd6e8",
-      colorB: "#c9b6ff",
+      colorB: "#ff9ec4",
+    },
+    {
+      id: "mushrooms",
+      icon: "🍄",
+      price: 1600,
+      photo: "",
+      colorA: "#ffe4f1",
+      colorB: "#f4a5c4",
+    },
+    {
+      id: "jacket",
+      icon: "🧥",
+      price: 2000,
+      photo: "",
+      colorA: "#cfe9ff",
+      colorB: "#8fc8ff",
+    },
+    {
+      id: "cocktails",
+      icon: "🍹",
+      price: 2500,
+      photo: "",
+      colorA: "#ffe4f1",
+      colorB: "#f4a5c4",
     },
   ],
 
@@ -168,12 +166,12 @@ window.GAME_CONFIG = {
   games: {
     bugs: {
       duration: 45, // seconds in a round
-      goal: 12, // catches needed to win
+      goal: 50, // catches needed to win
       onField: 6, // how many bugs are out at once
       netRadius: 36, // bigger = easier to catch
       fleeDistance: 110, // how close the net gets before bugs run (0 = never)
-      bellsPerCatch: 30, // a clean win (the goal, right on time) pays about 600
-      winBonus: 240,
+      bellsPerCatch: 15, // a clean win (the goal, right on time) pays about 600
+      winBonus: 0,
       // glyph, points scored, and how fast that bug moves
       bugs: [
         { glyph: "🦋", points: 1, speed: 52, name: "Flower Butterfly" },
@@ -187,16 +185,16 @@ window.GAME_CONFIG = {
 
     orchard: {
       duration: 45,
-      goal: 10, // perfect picks needed to win
+      goal: 30, // perfect picks needed to win
       onTree: 4, // fruits ripening at once
       ripenFrom: 0.3, // slowest ripening speed (units per second)
       ripenTo: 0.46, // fastest ripening speed
       perfectFrom: 0.78, // the golden ring window: wider = easier
       perfectTo: 1.02,
       overripeAt: 1.28, // past this the fruit drops by itself
-      bellsPerPerfect: 32,
-      bellsPerLate: 10, // picked slightly overripe
-      winBonus: 260,
+      bellsPerPerfect: 15,
+      bellsPerLate: 5, // picked slightly overripe
+      winBonus: 100,
       fruit: [
         { glyph: "🍊", name: "Valencia Orange" },
         { glyph: "🌸", name: "Orange Blossom" },
@@ -210,24 +208,24 @@ window.GAME_CONFIG = {
 
     fishing: {
       goal: 5, // fish needed to win
-      casts: 8, // casts allowed
-      biteWindow: 0.95, // seconds to react once it bites: higher = easier
-      waitFrom: 1.4, // shortest wait before a bite
-      waitTo: 4.2, // longest wait before a bite
-      winBonus: 200,
+      casts: 10, // casts allowed
+      biteWindow: 0.55, // seconds to react once it bites: higher = easier
+      waitFrom: 1, // shortest wait before a bite
+      waitTo: 15, // longest wait before a bite
+      winBonus: 100,
       // chance is relative, so these do not have to add up to anything.
       // a typical catch is worth about 75, so five fish and the win bonus
       // land near 600. The rare ones are a treat, not a payday.
       fish: [
-        { glyph: "🍣", chance: 28, bells: 60, name: "Salmon Nigiri" },
-        { glyph: "🐟", chance: 18, bells: 50, name: "Cádiz Sardine" },
-        { glyph: "🐠", chance: 16, bells: 70, name: "Tuna Sashimi" },
-        { glyph: "🦐", chance: 12, bells: 80, name: "Sweet Shrimp" },
-        { glyph: "🍳", chance: 10, bells: 65, name: "Tamago" },
-        { glyph: "🐙", chance: 7, bells: 110, name: "Octopus Nigiri" },
-        { glyph: "🦀", chance: 5, bells: 120, name: "Galician Crab" },
-        { glyph: "🪙", chance: 3, bells: 170, name: "Coin from the Mists" },
-        { glyph: "💎", chance: 1, bells: 240, name: "Bead of Atium" },
+        { glyph: "🍣", chance: 28, bells: 20, name: "Salmon Nigiri" },
+        { glyph: "🐟", chance: 18, bells: 10, name: "Cádiz Sardine" },
+        { glyph: "🐠", chance: 16, bells: 30, name: "Tuna Sashimi" },
+        { glyph: "🦐", chance: 12, bells: 50, name: "Sweet Shrimp" },
+        { glyph: "🍳", chance: 10, bells: 1, name: "Tamago" },
+        { glyph: "🐙", chance: 7, bells: 80, name: "Octopus Nigiri" },
+        { glyph: "🦀", chance: 5, bells: 100, name: "Galician Crab" },
+        { glyph: "🪙", chance: 3, bells: 150, name: "Coin from the Mists" },
+        { glyph: "💎", chance: 1, bells: 200, name: "Bead of Atium" },
       ],
     },
 
@@ -251,15 +249,15 @@ window.GAME_CONFIG = {
 
     rain: {
       duration: 60,
-      goal: 350, // points needed to win
+      goal: 1500, // points needed to win
       hearts: 3,
       mercySeconds: 1.2, // invulnerable time after a hit
       catchWidth: 38, // reach for good things: bigger = easier
       dodgeWidth: 24, // reach of the lightning: smaller = kinder
       spawnFrom: 0.34, // fastest gap between falling things
       spawnTo: 0.72, // slowest gap
-      bellsPerPoint: 0.8,
-      winBonus: 300,
+      bellsPerPoint: 0.5,
+      winBonus: 100,
       items: [
         { glyph: "☂️", points: 30, chance: 24, good: true, name: "Umbrella" },
         { glyph: "🌸", points: 22, chance: 14, good: true, name: "Sakura" },
@@ -302,7 +300,7 @@ window.GAME_CONFIG = {
     },
 
     concert: {
-      bpm: 104, // slower = easier
+      bpm: 127, // slower = easier
       bars: 16, // song length
       leadIn: 2.4, // count-in before the first note
       travel: 1.55, // seconds a note takes to fall: higher = more warning
@@ -487,7 +485,7 @@ window.GAME_TEXT = {
     "Oh! You made it! Welcome to Sakura Island, {name}!",
     "I'm {host}, the mayor, the shopkeeper and the entire tourism office.",
     "Today is your birthday, so the island made you a deal: play, earn Bells, and I'll hand over the presents hidden behind my counter.",
-    "Seven of them, one at a time. The sneakers and the jacket are real. I'm not even kidding.",
+    "Seven of them, one at a time. I'm not even kidding.",
   ],
   dlg_first_bells: [
     "Look at all those Bells! The shop is that pink building on the map.",
@@ -505,40 +503,40 @@ window.GAME_TEXT = {
    ------------------------------------------------------------------ */
 
 window.GIFT_TEXT = {
+  crown: {
+    name: "A Crown",
+    tagline: "For a real princess.",
+    note: "A real crown.",
+  },
   shoes: {
-    name: "Gym-Day Sneakers",
-    tagline: "For the gym, the flowers, and the walk after sushi.",
-    note: "A real pair. Protein powder is in the bag, and little flowers sit where you'll see them between sets. Try them on, they are yours.",
+    name: "Insane Sneakers",
+    tagline: "To look cool in any situation.",
+    note: "And climb the highest mountains.",
   },
   jacket: {
     name: "Misty Rain Jacket",
-    tagline: "Spain in the rain. You'll hear all of it.",
-    note: "Closer to a mistcloak than a raincoat, which feels right. Wear it when Spain turns grey, turn the hearing aids up, and let Bad Bunny and Bad Gyal fight the weather. I'll be right next to you.",
+    tagline: "To protect you from the rain.",
+    note: "And hopefully looking cool.",
   },
   bouquet: {
-    name: "A Bouquet with Your Name",
-    tagline: "Flowers. The real kind, not the pixel ones.",
-    note: "Every flower on the island was practice. These ones you can put in water. I paid attention to the ones you stop to look at.",
+    name: "A Bouquet",
+    tagline: "For the flowers you stopped to look at.",
+    note: "Every flower on the island was practice. These ones you can put in water.",
   },
-  sushi: {
-    name: "Sushi Night",
-    tagline: "Sit down. I'll order too much.",
-    note: "Salmon nigiri, the extra tamago, and the seat next to mine. This one isn't a picture of dinner. It's dinner.",
+  massage: {
+    name: "A Relaxing Massage",
+    tagline: "For the tired muscles.",
+    note: "A real massage.",
   },
-  apothecary: {
-    name: "Maomao's Apothecary Box",
-    tagline: "The books, and a little box of herbs to read them with.",
-    note: "For the girl who would absolutely taste the suspicious mushroom. Please don't. The stories are enough, and I'll read the good parts out loud.",
+  mushrooms: {
+    name: "A Curious Mushroom",
+    tagline: "A curious mushroom.",
+    note: "And hopefully not poisonous.",
   },
-  mistborn: {
-    name: "Coins from the Mists",
-    tagline: "The books, and one coin for your pocket.",
-    note: "So you can disappear into the mists whenever you like, and still find your way back. I'll be on the other side of the page.",
-  },
-  encore: {
-    name: "Encore Night",
-    tagline: "Bad Bunny, then Bad Gyal. Hearing aids up.",
-    note: "A night that is loud on purpose, so you can hear all of it. If Spain is raining, we dance inside. I'll take the second verse.",
+  cocktails: {
+    name: "A Delicious Cocktail",
+    tagline: "To relax after a long day.",
+    note: "And to celebrate !!!",
   },
 };
 
@@ -549,6 +547,6 @@ window.GIFT_TEXT = {
 window.LETTER_TEXT = [
   "Happy birthday, {name}.",
   "I built you an island because I wanted your present to last longer than the five seconds it takes to open a box.",
-  "You caught bugs in the flowers, fished up sushi, dug a coin out of the mist, and kept a concert loud enough to hear. The sneakers and the jacket are real, and so is the rest of the counter: flowers, dinner, books, and a night with the volume up.",
-  "Thank you for every ordinary day you turn into a good one. Here's to another year of walks, rain, and you.",
+  "You caught bugs in the flowers, fished up sushi, dug a coin out of the mist, and kept a concert loud enough to hear. You also earned enough Bells to reimburse me for the island.",
+  "Thank you for every ordinary day you turn into a good one. Here's to another year of walks, rain, protein powder, weird anime,and you.",
 ];

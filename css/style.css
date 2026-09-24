@@ -1296,6 +1296,10 @@ p {
   overflow: hidden;
 }
 
+body.playing .petals {
+  display: none;
+}
+
 .petal {
   position: absolute;
   top: -30px;

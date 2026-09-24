@@ -38,6 +38,7 @@
     for (var i = 0; i < screens.length; i++) {
       screens[i].classList.toggle("active", screens[i].id === "screen-" + id);
     }
+    document.body.classList.toggle("playing", id === "game");
     window.scrollTo(0, 0);
   }
 
@@ -317,6 +318,7 @@
     var glyphs = ["🌸", "🌸", "🌺", "✿", "❀"];
     setInterval(function () {
       if (document.hidden) return;
+      if (document.body.classList.contains("playing")) return;
       if (host.childElementCount > 18) return;
       var el = document.createElement("span");
       el.className = "petal";
